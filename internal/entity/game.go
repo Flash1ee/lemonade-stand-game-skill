@@ -36,3 +36,8 @@ func NewSession() *Session {
 		Days:       days,
 	}
 }
+
+type Weather struct {
+	Wtype      string
+	RainChance int64
+}

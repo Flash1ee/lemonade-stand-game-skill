@@ -20,7 +20,7 @@ func newLemonadeRoutes(handler *gin.RouterGroup, t usecase.LemonadeGameUsecase, 
 	h := handler.Group("")
 	{
 		h.GET("/create", r.createUser)
-		//h.POST("/do-translate", r.doTranslate)
+		h.GET("/weather", r.randomWeather)
 	}
 }
 
@@ -31,6 +31,24 @@ type createUserResponse struct {
 func (r *lemonadeRoutes) createUser(c *gin.Context) {
 	user := r.t.CreateUser()
 	c.JSON(http.StatusOK, createUserResponse{user})
+}
+
+type randomWeatherResponse struct {
+	WeatherName string `json:"weather_name"`
+	RainChance  int64  `json:"rain_chance"`
+}
+
+func (r *lemonadeRoutes) randomWeather(c *gin.Context) {
+	weather, err := r.t.GetRandomWeather()
+	if err != nil {
+		r.l.Error(err, "http - v1 - createUser")
+		errorResponse(c, http.StatusBadRequest, "invalid get weather")
+		return
+	}
+	c.JSON(http.StatusOK, randomWeatherResponse{
+		WeatherName: weather.Wtype,
+		RainChance:  weather.RainChance,
+	})
 }
 
 //type doTranslateRequest struct {

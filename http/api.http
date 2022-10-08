@@ -2,3 +2,8 @@
 GET http://localhost:8080/v1/create
 
 ###
+
+### Получение случайной погоды на текущий день
+GET http://localhost:8080/v1/weather
+
+###
