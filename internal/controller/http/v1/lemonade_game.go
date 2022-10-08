@@ -3,6 +3,7 @@ package v1
 import (
 	"net/http"
 
+	"github.com/evrone/go-clean-template/internal/entity"
 	"github.com/gin-gonic/gin"
 
 	"github.com/evrone/go-clean-template/internal/usecase"
@@ -22,6 +23,8 @@ func newLemonadeRoutes(handler *gin.RouterGroup, t usecase.LemonadeGameUsecase, 
 		h.GET("/id", r.createUser)
 		h.GET("/weather", r.randomWeather)
 		h.GET("/balance", r.balance)
+		h.POST("/calculate", r.calculate)
+
 	}
 }
 
@@ -40,7 +43,13 @@ type randomWeatherResponse struct {
 }
 
 func (r *lemonadeRoutes) randomWeather(c *gin.Context) {
-	weather, err := r.t.GetRandomWeather()
+	userID := c.Query("id")
+	if userID == "" {
+		r.l.Error("http - v1 - balance")
+		errorResponse(c, http.StatusForbidden, "userID not found")
+		return
+	}
+	weather, err := r.t.GetRandomWeather(userID)
 	if err != nil {
 		r.l.Error(err, "http - v1 - createUser")
 		errorResponse(c, http.StatusBadRequest, "invalid get weather")
@@ -74,11 +83,50 @@ func (r *lemonadeRoutes) balance(c *gin.Context) {
 	})
 }
 
-//type doTranslateRequest struct {
-//	Source      string `json:"source"       binding:"required"  example:"auto"`
-//	Destination string `json:"destination"  binding:"required"  example:"en"`
-//	Original    string `json:"original"     binding:"required"  example:"текст для перевода"`
-//}
+type calculateRequest struct {
+	CupsAmount  int64 `json:"cups_amount"      binding:"required"`
+	IceAmount   int64 `json:"ice_amount"       binding:"required"`
+	StandAmount int64 `json:"stand_amount"     binding:"required"`
+	Price       int64 `json:"price"            binding:"required"`
+}
+
+type calculateResponse struct {
+	Balance int64 `json:"balance"`
+	Profit  int64 `json:"profit"`
+	Day     int64 `json:"day"`
+}
+
+func (r *lemonadeRoutes) calculate(c *gin.Context) {
+	userID := c.Query("id")
+	if userID == "" {
+		r.l.Error("http - v1 - balance")
+		errorResponse(c, http.StatusForbidden, "userID not found")
+		return
+	}
+	var req calculateRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		r.l.Error(err, "http - v1 - calculate")
+		errorResponse(c, http.StatusBadRequest, "invalid request body")
+		return
+	}
+	res, err := r.t.Calculate(entity.DayParams{
+		CupsAmount:  req.CupsAmount,
+		IceAmount:   req.IceAmount,
+		StandAmount: req.StandAmount,
+		Price:       req.Price,
+	}, userID)
+	if err != nil {
+		r.l.Error(err, "http - v1 - createUser")
+		errorResponse(c, http.StatusBadRequest, "error get balance")
+		return
+	}
+	c.JSON(http.StatusOK, calculateResponse{
+		Balance: res.Balance,
+		Day:     res.Day,
+		Profit:  res.Profit,
+	})
+}
+
 //
 //// @Summary     Translate
 //// @Description Translate a text

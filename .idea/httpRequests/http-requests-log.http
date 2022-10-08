@@ -1,3 +1,285 @@
+POST http://localhost:8080/calculate?id=ecb49c98-450a-4736-b505-4309e9dbd9b2
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+###
+
+POST http://localhost:8080/calculate?id=ecb49c98-450a-4736-b505-4309e9dbd9b2
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T191241.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=ecb49c98-450a-4736-b505-4309e9dbd9b2
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T191240.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=ecb49c98-450a-4736-b505-4309e9dbd9b2
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T191239.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=ecb49c98-450a-4736-b505-4309e9dbd9b2
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T191238.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=ecb49c98-450a-4736-b505-4309e9dbd9b2
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T191237.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=ecb49c98-450a-4736-b505-4309e9dbd9b2
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T191236.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=ecb49c98-450a-4736-b505-4309e9dbd9b2
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T191229.200.json
+
+###
+
+GET http://localhost:8080/id
+
+<> 2022-10-08T191221.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=eeccade5-6adf-4bf1-b135-99070f22edc3
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T191119.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=eeccade5-6adf-4bf1-b135-99070f22edc3
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T191116.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=eeccade5-6adf-4bf1-b135-99070f22edc3
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T191114.200.json
+
+###
+
+GET http://localhost:8080/id
+
+<> 2022-10-08T191107.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=f7ac66f3-5d4a-4ff8-828d-781b6a5c3267
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T190934.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=f7ac66f3-5d4a-4ff8-828d-781b6a5c3267
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T190930.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=f7ac66f3-5d4a-4ff8-828d-781b6a5c3267
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T190928.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=f7ac66f3-5d4a-4ff8-828d-781b6a5c3267
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T190921.200.json
+
+###
+
+GET http://localhost:8080/id
+
+<> 2022-10-08T190912.200.json
+
+###
+
+POST http://localhost:8080/calculate?id=765343ea-d099-40c7-ab72-78413f611cfa
+Content-Type: application/json
+
+{
+  "caps_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+###
+
+POST http://localhost:8080/calculate?id=765343ea-d099-40c7-ab72-78413f611cfa
+Content-Type: application/json
+
+{
+  "caps_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+###
+
+POST http://localhost:8080/calculate?id=765343ea-d099-40c7-ab72-78413f611cfa
+Content-Type: application/json
+
+{
+  "cups_amount": 10,
+  "ice_amount":20,
+  "stand_amount":30,
+  "price": 100
+}
+
+<> 2022-10-08T190729.400.json
+
+###
+
+GET http://localhost:8080/balance?id=765343ea-d099-40c7-ab72-78413f611cfa
+
+<> 2022-10-08T190721.200.json
+
+###
+
+GET http://localhost:8080/id
+
+<> 2022-10-08T190707.200.json
+
+###
+
+GET http://localhost:8080/id
+
+<> 2022-10-08T190705.200.json
+
+###
+
 GET http://localhost:8080/balance?id=51511478-f325-4552-8cb0-130738101ad6
 
 <> 2022-10-08T181216.200.json

@@ -1,10 +1,10 @@
 package entity
 
 const (
-	glassPrice = 300
+	glassPrice = 10
 	icePrice   = 50
-	StandPrice = 800
-	days       = 7
+	StandPrice = 10
+	days       = 21
 	balance    = 2000
 )
 
@@ -28,19 +28,36 @@ func NewGameParams() *GameParamsPrices {
 
 type Session struct {
 	GameParams GameParamsPrices
+	Weather    []Weather
 	Days       int64
 	Balance    int64
+	CurDay     int64
 }
 
 func NewSession() *Session {
 	return &Session{
 		GameParams: *NewGameParams(),
+		Weather:    make([]Weather, days+1),
 		Days:       days,
 		Balance:    balance,
+		CurDay:     1,
 	}
 }
 
 type Weather struct {
 	Wtype      string
 	RainChance int64
+}
+
+type DayParams struct {
+	CupsAmount  int64
+	IceAmount   int64
+	StandAmount int64
+	Price       int64
+}
+
+type DayResult struct {
+	Balance int64
+	Profit  int64
+	Day     int64
 }
