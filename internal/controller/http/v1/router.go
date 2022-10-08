@@ -38,7 +38,7 @@ func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.LemonadeGameUs
 	handler.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
 	// Routers
-	h := handler.Group("/v1")
+	h := handler.Group("")
 	{
 		newLemonadeRoutes(h, t, l)
 	}

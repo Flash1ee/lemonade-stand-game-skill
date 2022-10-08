@@ -5,6 +5,7 @@ const (
 	icePrice   = 50
 	StandPrice = 800
 	days       = 7
+	balance    = 2000
 )
 
 type User struct {
@@ -28,12 +29,14 @@ func NewGameParams() *GameParamsPrices {
 type Session struct {
 	GameParams GameParamsPrices
 	Days       int64
+	Balance    int64
 }
 
 func NewSession() *Session {
 	return &Session{
 		GameParams: *NewGameParams(),
 		Days:       days,
+		Balance:    balance,
 	}
 }
 

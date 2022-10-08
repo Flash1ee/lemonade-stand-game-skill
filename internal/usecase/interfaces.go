@@ -6,5 +6,6 @@ package usecase
 type (
 	GameRepo interface {
 		CreateUser() string
+		GetBalance(userID string) (int64, error)
 	}
 )

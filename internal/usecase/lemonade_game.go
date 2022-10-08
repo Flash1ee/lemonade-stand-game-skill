@@ -51,3 +51,11 @@ func (u *LemonadeGameUsecase) GetRandomWeather() (entity.Weather, error) {
 	}
 	return response, nil
 }
+
+func (u *LemonadeGameUsecase) GetBalance(userID string) (int64, error) {
+	res, err := u.repo.GetBalance(userID)
+	if err != nil {
+		return 0, err
+	}
+	return res, nil
+}

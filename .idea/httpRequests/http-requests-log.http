@@ -1,0 +1,141 @@
+GET http://localhost:8080/balance?id=51511478-f325-4552-8cb0-130738101ad6
+
+<> 2022-10-08T181216.200.json
+
+###
+
+GET http://localhost:8080/id
+
+<> 2022-10-08T181201.200.json
+
+###
+
+GET http://localhost:8080/balance
+
+<> 2022-10-08T181156.403.json
+
+###
+
+GET http://localhost:8080/v1/balance
+
+<> 2022-10-08T181151.404.txt
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175345.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175342.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175340.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175339-1.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175339.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175337.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175336-1.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175336.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175335.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175334.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175333.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175332.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175330.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175329.200.json
+
+###
+
+GET http://localhost:8080/v1/weather
+
+<> 2022-10-08T175327.200.json
+
+###
+
+GET http://localhost:8080/v1/create
+
+<> 2022-10-08T161004.200.json
+
+###
+
+GET http://localhost:8090/v1/create
+
+###
+
+GET http://localhost:8090/v1/create
+Accept: application/json
+
+###
+
+GET http://localhost:8090/create
+Accept: application/json
+
+###
+
+GET http://localhost:8080/create
+Accept: application/json
+
+<> 2022-10-08T160805.404.txt
+
+###
+
