@@ -7,7 +7,10 @@ import (
 	"os/signal"
 	"syscall"
 
+	grpc_v1 "github.com/evrone/go-clean-template/internal/controller/grpc/v1"
+	grpcserver "github.com/evrone/go-clean-template/pkg/grpc/server"
 	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc"
 
 	"github.com/evrone/go-clean-template/config"
 	v1 "github.com/evrone/go-clean-template/internal/controller/http/v1"
@@ -46,6 +49,13 @@ func Run(cfg *config.Config) {
 	handler := gin.New()
 	v1.NewRouter(handler, l, *gameUsecase)
 	httpServer := httpserver.New(handler, httpserver.Port(cfg.HTTP.Port))
+
+	// GRPC Server
+	grpcServer := grpc.NewServer()
+	gameGRPCServer := grpcserver.NewGameLemonadeGRPCServer(l, grpcServer, *grpc_v1.NewLemonadeRoutes(*gameUsecase, l))
+	go func() {
+		_ = gameGRPCServer.StartGRPCServer(cfg.GRPC.Port)
+	}()
 
 	// Waiting signal
 	interrupt := make(chan os.Signal, 1)

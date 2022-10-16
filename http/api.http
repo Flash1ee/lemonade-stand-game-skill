@@ -1,17 +1,14 @@
 ### Создания сессии, регистрация пользователя
-GET http://localhost:8080/id
+POST http://localhost:8080/id
 
-###
 
 ### Получение случайной погоды на текущий день
 GET http://localhost:8080/weather
 
-###
 
 ### Получение текущего баланса пользователя
 GET http://localhost:8080/balance?id=765343ea-d099-40c7-ab72-78413f611cfa
 
-###
 
 ### Получение текущего баланса пользователя
 POST http://localhost:8080/calculate?id=ecb49c98-450a-4736-b505-4309e9dbd9b2

@@ -8,6 +8,7 @@ require (
 	github.com/Masterminds/squirrel v1.5.2
 	github.com/gin-gonic/gin v1.7.7
 	github.com/golang-migrate/migrate/v4 v4.15.1
+	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.3.0
 	github.com/ilyakaznacheev/cleanenv v1.2.6
 	github.com/jackc/pgx/v4 v4.14.1
@@ -17,6 +18,8 @@ require (
 	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2
 	github.com/swaggo/gin-swagger v1.3.3
 	github.com/swaggo/swag v1.7.9
+	google.golang.org/grpc v1.50.1
+	google.golang.org/protobuf v1.28.1
 )
 
 require (
@@ -80,7 +83,7 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.7 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
-	google.golang.org/protobuf v1.27.1 // indirect
+	google.golang.org/genproto v0.0.0-20211013025323-ce878158c4d4 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 	olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3 // indirect

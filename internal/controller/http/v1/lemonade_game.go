@@ -20,7 +20,7 @@ func newLemonadeRoutes(handler *gin.RouterGroup, t usecase.LemonadeGameUsecase, 
 
 	h := handler.Group("")
 	{
-		h.GET("/id", r.createUser)
+		h.POST("/id", r.createUser)
 		h.GET("/weather", r.randomWeather)
 		h.GET("/balance", r.balance)
 		h.POST("/calculate", r.calculate)

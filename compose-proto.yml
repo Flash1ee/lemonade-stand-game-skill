@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+  protoc-all:
+    image: namely/protoc-all:latest
+    command:
+      -d proto
+      -o internal/generated/delivery/protobuf
+      -l go
+      --with-gateway
+    volumes:
+      - ./:/defs
