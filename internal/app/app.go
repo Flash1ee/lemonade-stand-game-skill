@@ -3,6 +3,7 @@ package app
 
 import (
 	"fmt"
+	"github.com/evrone/go-clean-template/internal/usecase/repo/map"
 	"os"
 	"os/signal"
 	"syscall"
@@ -15,7 +16,6 @@ import (
 	"github.com/evrone/go-clean-template/config"
 	v1 "github.com/evrone/go-clean-template/internal/controller/http/v1"
 	"github.com/evrone/go-clean-template/internal/usecase"
-	"github.com/evrone/go-clean-template/internal/usecase/repo"
 	"github.com/evrone/go-clean-template/pkg/httpserver"
 	"github.com/evrone/go-clean-template/pkg/logger"
 	"github.com/evrone/go-clean-template/pkg/postgres"
@@ -34,7 +34,7 @@ func Run(cfg *config.Config) {
 
 	// Use case
 	gameUsecase := usecase.New(
-		repo.NewGameRepository(),
+		_map.NewGameRepository(),
 	)
 
 	// RabbitMQ RPC Server
