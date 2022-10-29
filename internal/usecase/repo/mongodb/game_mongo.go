@@ -103,16 +103,18 @@ func (repo *GameRepository) SaveResult(sessionID string, result int64) error {
 	return err
 }
 
-func (repo *GameRepository) GetResult(userID string) ([]entity.Statistics, error) {
+func (repo *GameRepository) GetResult(sessiondID string) ([]entity.Statistics, error) {
+	session, err := repo.GetSession(sessiondID)
+
 	userRes := entity.Statistics{}
-	err := repo.collectStatistics.FindOne(repo.ctx,
-		bson.D{{"vk_user_id", userID}}).
+	err = repo.collectStatistics.FindOne(repo.ctx,
+		bson.D{{"vk_user_id", session.VKUserId}}).
 		Decode(&userRes)
 	if err != nil {
 		return nil, err
 	}
 	results := make([]entity.Statistics, 0, 5)
-	opts := options.Find().SetSort(bson.D{{"rating", 1}})
+	opts := options.Find().SetSort(bson.D{{"result", 1}})
 	cur, err := repo.collectStatistics.Find(repo.ctx, opts)
 	if err != nil {
 		return nil, err
