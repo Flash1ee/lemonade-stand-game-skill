@@ -67,8 +67,6 @@ github.com/BurntSushi/toml v0.4.1 h1:GaI7EiDXDRfa8VshkTj7Fym7ha+y8/XxIgD2okUIjLw
 github.com/BurntSushi/toml v0.4.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/ClickHouse/clickhouse-go v1.4.3/go.mod h1:EaI/sW7Azgz9UATzd5ZdZHRUhHgv5+JMS9NSr2smCJI=
-github.com/Conight/go-googletrans v0.0.0-20200929083318-176776d061cb h1:MwdqXipO1SFnK2k1iIL8xlUkZC63KdZR6QB/DSIlYBk=
-github.com/Conight/go-googletrans v0.0.0-20200929083318-176776d061cb/go.mod h1:J9k1GS4/KUFdJgWCp8Od4J3XXalm3pUPm8YYrMFzYTk=
 github.com/Eun/go-convert v0.0.0-20200421145326-bef6c56666ee/go.mod h1:cMqWKb0SQrV+L1Zve08CI1NQGPeRAjXuYTxYE/y6gcU=
 github.com/Eun/go-convert v1.2.12 h1:D41UCahfL6GVlFgmA1NnS9Rd8btaW/7yf3Hu5Jq8i48=
 github.com/Eun/go-convert v1.2.12/go.mod h1:1OhNyVVubZfPnhPY6jVik7mI3r2iEsAWKi9TO4Cfoyc=
@@ -438,6 +436,8 @@ github.com/go-playground/validator/v10 v10.9.0/go.mod h1:74x4gJWsvQexRdW8Pn3dXSG
 github.com/go-sql-driver/mysql v1.4.0/go.mod h1:zAC/RDZ24gD3HViQzih4MyKcchzm+sOG5ZlKdlhCg5w=
 github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
 github.com/go-stack/stack v1.8.0/go.mod h1:v0f6uXyyMGvRgIKkXu+yp6POWl0qKG85gN/melR3HDY=
+github.com/go-vk-api/vk v0.0.0-20200129183856-014d9b8adc96 h1:gFOrXsbjC+XvHIVMx608V/mRVZwmU9xofR1Vht9p3Zg=
+github.com/go-vk-api/vk v0.0.0-20200129183856-014d9b8adc96/go.mod h1:UeBKPsuqp+KSBDtC7gr+Lng+TEaoFXT/mpOs6Tj7tFQ=
 github.com/gobuffalo/attrs v0.0.0-20190224210810-a9411de4debd/go.mod h1:4duuawTqi2wkkpB4ePgWMaai6/Kc6WEz83bhFwpHzj0=
 github.com/gobuffalo/depgen v0.0.0-20190329151759-d478694a28d3/go.mod h1:3STtPUQYuzV0gBVOY3vy6CfMm/ljR4pABfrTeHNLHUY=
 github.com/gobuffalo/depgen v0.1.0/go.mod h1:+ifsuy7fhi15RWncXQQKjWS9JPkdah5sZvtHc2RXGlg=

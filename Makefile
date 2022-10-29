@@ -26,8 +26,6 @@ swag-v1: ### swag init
 .PHONY: swag-v1
 
 run: swag-v1 ### swag run
-	#go mod tidy && go mod download && \
-#	DISABLE_SWAGGER_HTTP_HANDLER='' GIN_MODE=debug CGO_ENABLED=0 go run -tags migrate ./cmd/app
 	go mod tidy && go mod download && \
 		DISABLE_SWAGGER_HTTP_HANDLER='' GIN_MODE=debug CGO_ENABLED=0 go run ./cmd/app
 .PHONY: run

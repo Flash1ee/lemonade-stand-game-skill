@@ -14,6 +14,8 @@ func main() {
 		log.Fatalf("Config error: %s", err)
 	}
 
+	print(rune('1') - '1')
+
 	// Run
 	app.Run(cfg)
 }
