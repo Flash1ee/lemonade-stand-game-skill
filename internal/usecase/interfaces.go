@@ -15,4 +15,10 @@ type (
 		SaveResult(sessionID string, result int64) error
 		GetFriendsResult(friendsId []string) ([]entity.Statistics, error)
 	}
+
+	// VKWebAPI -.
+	VKWebAPI interface {
+		GetVKUser(userIds ...string) ([]entity.VKUser, error)
+		GetVKUserFriends(userId string) (entity.VKFriends, error)
+	}
 )

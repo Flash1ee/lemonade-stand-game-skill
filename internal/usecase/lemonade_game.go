@@ -21,13 +21,15 @@ var weather = map[int64]string{
 }
 
 type LemonadeGameUsecase struct {
-	repo GameRepo
+	repo  GameRepo
+	vkApi VKWebAPI
 }
 
 // New -.
 func New(r GameRepo) *LemonadeGameUsecase {
 	return &LemonadeGameUsecase{
-		repo: r,
+		repo:  r,
+		vkApi: nil,
 	}
 }
 
