@@ -26,6 +26,8 @@ type LemonadeGameClient interface {
 	RandomWeather(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Weather, error)
 	GetBalance(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Balance, error)
 	Calculate(ctx context.Context, in *CalculateRequest, opts ...grpc.CallOption) (*CalculateResponse, error)
+	SaveResult(ctx context.Context, in *SaveResultMessage, opts ...grpc.CallOption) (*Nothing, error)
+	GetResult(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*ResultResponses, error)
 }
 
 type lemonadeGameClient struct {
@@ -72,6 +74,24 @@ func (c *lemonadeGameClient) Calculate(ctx context.Context, in *CalculateRequest
 	return out, nil
 }
 
+func (c *lemonadeGameClient) SaveResult(ctx context.Context, in *SaveResultMessage, opts ...grpc.CallOption) (*Nothing, error) {
+	out := new(Nothing)
+	err := c.cc.Invoke(ctx, "/game.LemonadeGame/SaveResult", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lemonadeGameClient) GetResult(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*ResultResponses, error) {
+	out := new(ResultResponses)
+	err := c.cc.Invoke(ctx, "/game.LemonadeGame/GetResult", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LemonadeGameServer is the server API for LemonadeGame service.
 // All implementations should embed UnimplementedLemonadeGameServer
 // for forward compatibility
@@ -80,6 +100,8 @@ type LemonadeGameServer interface {
 	RandomWeather(context.Context, *GameID) (*Weather, error)
 	GetBalance(context.Context, *GameID) (*Balance, error)
 	Calculate(context.Context, *CalculateRequest) (*CalculateResponse, error)
+	SaveResult(context.Context, *SaveResultMessage) (*Nothing, error)
+	GetResult(context.Context, *GameID) (*ResultResponses, error)
 }
 
 // UnimplementedLemonadeGameServer should be embedded to have forward compatible implementations.
@@ -97,6 +119,12 @@ func (UnimplementedLemonadeGameServer) GetBalance(context.Context, *GameID) (*Ba
 }
 func (UnimplementedLemonadeGameServer) Calculate(context.Context, *CalculateRequest) (*CalculateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Calculate not implemented")
+}
+func (UnimplementedLemonadeGameServer) SaveResult(context.Context, *SaveResultMessage) (*Nothing, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SaveResult not implemented")
+}
+func (UnimplementedLemonadeGameServer) GetResult(context.Context, *GameID) (*ResultResponses, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetResult not implemented")
 }
 
 // UnsafeLemonadeGameServer may be embedded to opt out of forward compatibility for this service.
@@ -182,6 +210,42 @@ func _LemonadeGame_Calculate_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LemonadeGame_SaveResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SaveResultMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LemonadeGameServer).SaveResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.LemonadeGame/SaveResult",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LemonadeGameServer).SaveResult(ctx, req.(*SaveResultMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LemonadeGame_GetResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GameID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LemonadeGameServer).GetResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.LemonadeGame/GetResult",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LemonadeGameServer).GetResult(ctx, req.(*GameID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LemonadeGame_ServiceDesc is the grpc.ServiceDesc for LemonadeGame service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -205,6 +269,14 @@ var LemonadeGame_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "Calculate",
 			Handler:    _LemonadeGame_Calculate_Handler,
 		},
+		{
+			MethodName: "SaveResult",
+			Handler:    _LemonadeGame_SaveResult_Handler,
+		},
+		{
+			MethodName: "GetResult",
+			Handler:    _LemonadeGame_GetResult_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "game.proto",
@@ -218,6 +290,8 @@ type BotanicalGardenGameClient interface {
 	RandomWeather(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Weather, error)
 	GetBalance(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Balance, error)
 	Calculate(ctx context.Context, in *CalculateRequest, opts ...grpc.CallOption) (*CalculateResponse, error)
+	SaveResult(ctx context.Context, in *SaveResultMessage, opts ...grpc.CallOption) (*Nothing, error)
+	GetResult(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*ResultResponses, error)
 }
 
 type botanicalGardenGameClient struct {
@@ -264,6 +338,24 @@ func (c *botanicalGardenGameClient) Calculate(ctx context.Context, in *Calculate
 	return out, nil
 }
 
+func (c *botanicalGardenGameClient) SaveResult(ctx context.Context, in *SaveResultMessage, opts ...grpc.CallOption) (*Nothing, error) {
+	out := new(Nothing)
+	err := c.cc.Invoke(ctx, "/game.BotanicalGardenGame/SaveResult", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *botanicalGardenGameClient) GetResult(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*ResultResponses, error) {
+	out := new(ResultResponses)
+	err := c.cc.Invoke(ctx, "/game.BotanicalGardenGame/GetResult", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BotanicalGardenGameServer is the server API for BotanicalGardenGame service.
 // All implementations should embed UnimplementedBotanicalGardenGameServer
 // for forward compatibility
@@ -272,6 +364,8 @@ type BotanicalGardenGameServer interface {
 	RandomWeather(context.Context, *GameID) (*Weather, error)
 	GetBalance(context.Context, *GameID) (*Balance, error)
 	Calculate(context.Context, *CalculateRequest) (*CalculateResponse, error)
+	SaveResult(context.Context, *SaveResultMessage) (*Nothing, error)
+	GetResult(context.Context, *GameID) (*ResultResponses, error)
 }
 
 // UnimplementedBotanicalGardenGameServer should be embedded to have forward compatible implementations.
@@ -289,6 +383,12 @@ func (UnimplementedBotanicalGardenGameServer) GetBalance(context.Context, *GameI
 }
 func (UnimplementedBotanicalGardenGameServer) Calculate(context.Context, *CalculateRequest) (*CalculateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Calculate not implemented")
+}
+func (UnimplementedBotanicalGardenGameServer) SaveResult(context.Context, *SaveResultMessage) (*Nothing, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SaveResult not implemented")
+}
+func (UnimplementedBotanicalGardenGameServer) GetResult(context.Context, *GameID) (*ResultResponses, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetResult not implemented")
 }
 
 // UnsafeBotanicalGardenGameServer may be embedded to opt out of forward compatibility for this service.
@@ -374,6 +474,42 @@ func _BotanicalGardenGame_Calculate_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BotanicalGardenGame_SaveResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SaveResultMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BotanicalGardenGameServer).SaveResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.BotanicalGardenGame/SaveResult",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BotanicalGardenGameServer).SaveResult(ctx, req.(*SaveResultMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BotanicalGardenGame_GetResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GameID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BotanicalGardenGameServer).GetResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.BotanicalGardenGame/GetResult",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BotanicalGardenGameServer).GetResult(ctx, req.(*GameID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BotanicalGardenGame_ServiceDesc is the grpc.ServiceDesc for BotanicalGardenGame service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -396,6 +532,14 @@ var BotanicalGardenGame_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Calculate",
 			Handler:    _BotanicalGardenGame_Calculate_Handler,
+		},
+		{
+			MethodName: "SaveResult",
+			Handler:    _BotanicalGardenGame_SaveResult_Handler,
+		},
+		{
+			MethodName: "GetResult",
+			Handler:    _BotanicalGardenGame_GetResult_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

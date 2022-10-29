@@ -47,11 +47,27 @@ message User {
   string username = 1;
 }
 
+message SaveResultMessage {
+  GameID ID = 1;
+  int64 Result = 2;
+}
+
+message ResultResponses {
+  repeated Result results = 1;
+}
+
+message Result {
+  string username = 1;
+  int64 result = 2;
+}
+
 service LemonadeGame {
   rpc Create(User) returns (CreateResult);
   rpc RandomWeather(GameID) returns (Weather);
   rpc GetBalance(GameID) returns (Balance);
   rpc Calculate(CalculateRequest) returns (CalculateResponse);
+  rpc SaveResult(SaveResultMessage) returns (Nothing);
+  rpc GetResult(GameID) returns (ResultResponses);
 }
 
 service BotanicalGardenGame {
@@ -59,4 +75,6 @@ service BotanicalGardenGame {
   rpc RandomWeather(GameID) returns (Weather);
   rpc GetBalance(GameID) returns (Balance);
   rpc Calculate(CalculateRequest) returns (CalculateResponse);
+  rpc SaveResult(SaveResultMessage) returns (Nothing);
+  rpc GetResult(GameID) returns (ResultResponses);
 }

@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/evrone/go-clean-template/internal/entity"
@@ -29,7 +30,11 @@ func newBotanicalGardenRoutes(handler *gin.RouterGroup, t usecase.BotanicalGarde
 }
 
 func (r *botanicalGardenRoutes) createUser(c *gin.Context) {
-	user := r.t.CreateUser()
+	user, err := r.t.CreateUser("")
+	if err != nil {
+		r.l.Error(fmt.Errorf("http - v1 - Create, err: %w", err))
+		errorResponse(c, http.StatusInternalServerError, "create user error")
+	}
 	c.JSON(http.StatusOK, createUserResponse{user})
 }
 
