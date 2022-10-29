@@ -13,9 +13,9 @@ type User struct {
 }
 
 type GameParamsPrices struct {
-	Glass int64
-	Ice   int64
-	Stand int64
+	Glass int64 `bson:"glass"`
+	Ice   int64 `bson:"ice"`
+	Stand int64 `bson:"stand"`
 }
 
 func NewGameParams() *GameParamsPrices {
@@ -27,15 +27,19 @@ func NewGameParams() *GameParamsPrices {
 }
 
 type Session struct {
-	GameParams GameParamsPrices
-	Weather    []Weather
-	Days       int64
-	Balance    int64
-	CurDay     int64
+	SessionId  string           `bson:"session_id"`
+	VKUserId   string           `bson:"vk_user_id"`
+	GameParams GameParamsPrices `bson:"game_params"`
+	Weather    []Weather        `bson:"weather"`
+	Days       int64            `bson:"days"`
+	Balance    int64            `bson:"balance"`
+	CurDay     int64            `bson:"cur_day"`
 }
 
-func NewSession() *Session {
+func NewSession(VKUserId string, SessionId string) *Session {
 	return &Session{
+		SessionId:  SessionId,
+		VKUserId:   VKUserId,
 		GameParams: *NewGameParams(),
 		Weather:    make([]Weather, days+1),
 		Days:       days,
@@ -45,8 +49,8 @@ func NewSession() *Session {
 }
 
 type Weather struct {
-	Wtype      string
-	RainChance int64
+	Wtype      string `bson:"wtype"`
+	RainChance int64  `bson:"rainChance"`
 }
 
 type DayParams struct {
@@ -60,4 +64,9 @@ type DayResult struct {
 	Balance int64
 	Profit  int64
 	Day     int64
+}
+
+type Statistics struct {
+	VKUserId string `bson:"vk_user_id"`
+	Result   int64  `bson:"result"`
 }

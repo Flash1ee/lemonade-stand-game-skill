@@ -19,12 +19,12 @@ func NewGameRepository() *GameRepository {
 	}
 }
 
-func (repo *GameRepository) CreateUser() string {
+func (repo *GameRepository) CreateUser() (string, error) {
 	userID := uuid.New().String()
 
-	repo.data[userID] = *entity.NewSession()
+	repo.data[userID] = *entity.NewSession("", userID)
 
-	return userID
+	return userID, nil
 }
 
 func (repo *GameRepository) GetBalance(userID string) (int64, error) {

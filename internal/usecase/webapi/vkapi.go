@@ -28,3 +28,14 @@ func (v *VKWebAPI) GetVKUser(userIds ...string) ([]entity.VKUser, error) {
 
 	return results, err
 }
+
+// GetVKUserFriends - return user friend
+func (v *VKWebAPI) GetVKUserFriends(userId string) (entity.VKFriends, error) {
+	results := entity.VKFriends{}
+	err := v.clt.CallMethod("friends.get", vk.RequestParams{
+		"user_id": userId,
+		"order":   "random",
+	}, &results)
+
+	return results, err
+}

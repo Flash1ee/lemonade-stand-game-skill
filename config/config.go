@@ -2,19 +2,19 @@ package config
 
 import (
 	"fmt"
-
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
 type (
 	// Config -.
 	Config struct {
-		App  `yaml:"app"`
-		HTTP `yaml:"http"`
-		GRPC `yaml:"grpc"`
-		Log  `yaml:"logger"`
-		PG   `yaml:"postgres"`
-		RMQ  `yaml:"rabbitmq"`
+		App   `yaml:"app"`
+		HTTP  `yaml:"http"`
+		GRPC  `yaml:"grpc"`
+		Log   `yaml:"logger"`
+		PG    `yaml:"postgres"`
+		RMQ   `yaml:"rabbitmq"`
+		MONGO `yaml:"mongo"`
 	}
 
 	// App -.
@@ -41,6 +41,13 @@ type (
 	PG struct {
 		PoolMax int    `env-required:"true" yaml:"pool_max" env:"PG_POOL_MAX"`
 		URL     string `env-required:"true"                 env:"PG_URL"`
+	}
+
+	// MONGO -.
+	MONGO struct {
+		Timeout int64  `env-required:"true" yaml:"timeout" env:"MONGO_TIMEOUT"`
+		PoolMax uint64 `env-required:"true" yaml:"pool_max" env:"MONGO_POOL_MAX"`
+		URL     string `env-required:"true"                 env:"MONGO_URL"`
 	}
 
 	// RMQ -.

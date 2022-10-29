@@ -2,11 +2,15 @@
 package app
 
 import (
+	"context"
 	"fmt"
-	"github.com/evrone/go-clean-template/internal/usecase/repo/map"
+	"github.com/evrone/go-clean-template/internal/usecase/repo/mongodb"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	grpc_v1 "github.com/evrone/go-clean-template/internal/controller/grpc/v1"
 	grpcserver "github.com/evrone/go-clean-template/pkg/grpc/server"
@@ -32,9 +36,21 @@ func Run(cfg *config.Config) {
 	}
 	defer pg.Close()
 
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.MONGO.Timeout)*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, options.Client().SetMaxPoolSize(cfg.MONGO.PoolMax).ApplyURI(cfg.MONGO.URL))
+	if err != nil {
+		l.Fatal(fmt.Errorf("app - Run - mongo.Connect: %w", err))
+	}
+	defer func() {
+		err := client.Disconnect(ctx)
+		l.Warn(fmt.Errorf("app - Run - mongo.Disconnect: %w", err).Error())
+	}()
+
 	// Use case
 	gameUsecase := usecase.New(
-		_map.NewGameRepository(),
+		mongodb.NewGameRepository(client),
+		//_map.NewGameRepository(),
 	)
 
 	// RabbitMQ RPC Server
