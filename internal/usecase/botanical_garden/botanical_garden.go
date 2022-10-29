@@ -2,10 +2,10 @@ package botanical_garden
 
 import (
 	"crypto/rand"
+	"math"
 	"math/big"
 
 	"github.com/evrone/go-clean-template/internal/entity"
-	utils "github.com/evrone/go-clean-template/pkg"
 )
 
 const (
@@ -31,8 +31,16 @@ func New(r GameRepo) *BotanicalGardenGameUsecase {
 	}
 }
 
-func (u *BotanicalGardenGameUsecase) CreateUser() string {
-	return u.repo.CreateUser()
+func (u *BotanicalGardenGameUsecase) CreateUser(username string) (string, error) {
+	return u.repo.CreateUser(username)
+}
+
+func (u *BotanicalGardenGameUsecase) SaveStatistics(userID string, result int64) error {
+	return u.repo.SaveResult(userID, result)
+}
+
+func (u *BotanicalGardenGameUsecase) GetFriendsStatistics(sessionID string) error {
+	return nil
 }
 
 func (u *BotanicalGardenGameUsecase) GetRandomWeather(userID string) (entity.Weather, error) {
@@ -69,40 +77,48 @@ func (u *BotanicalGardenGameUsecase) Calculate(params entity.DayParams, userID s
 		return response, err
 	}
 	dayWeather := session.Weather[session.CurDay]
-	coef := 0.0
+	users := int64(100)
+
 	switch dayWeather.Wtype {
 	case hotWeather:
-		if params.IceAmount > params.CupsAmount {
-			coef += 0.3
+		if params.IceAmount < 4 {
+			users = users / (4 - params.IceAmount)
+		} else {
+			users = int64(float64(users) * 1.5)
 		}
 	case sunnyWeather:
-		if params.IceAmount > params.CupsAmount {
-			coef += 0.3
+		if params.IceAmount < 2 {
+			users = users / (2 - params.IceAmount)
+		} else if params.IceAmount <= 4 {
+			users = int64(float64(users) * 1.5)
+		} else {
+			users = int64(float64(users) * 0.5)
 		}
 	case cloudyWeather:
-		if params.IceAmount > params.CupsAmount {
-			coef -= 0.3
+		if res, _ := rand.Int(rand.Reader, big.NewInt(100)); res.Int64() < dayWeather.RainChance {
+			if params.IceAmount != 0 {
+				users = int64(float64(users) * 0.5)
+			}
+		} else {
+			if params.IceAmount == 0 {
+				users = int64(float64(users) / 1.5)
+			} else if params.IceAmount <= 2 {
+				users = int64(float64(users) * 1.5)
+			} else {
+				users = int64(float64(users) * 0.5)
+			}
 		}
-
-	}
-
-	if res, _ := rand.Int(rand.Reader, big.NewInt(100)); res.Int64() < dayWeather.RainChance {
-		coef /= 2
 	}
 
 	res, _ := rand.Int(rand.Reader, big.NewInt(params.StandAmount*3))
 	if params.StandAmount > res.Int64()/2 {
-		coef *= 2
+		users *= 2
 	} else {
-		coef += 0.2
+		users = int64(float64(users) * 0.2)
 	}
-	res, _ = rand.Int(rand.Reader, big.NewInt(1000))
 
-	coef += float64(res.Int64())
-	coef = utils.Min(coef, 1.0)
-
-	profit := params.CupsAmount*params.Price - session.GameParams.Glass*params.CupsAmount - session.GameParams.Ice*params.IceAmount - session.GameParams.Stand*params.StandAmount
-	profit = int64(float64(profit) * coef)
+	profit := int64(math.Min(float64(users), float64(params.CupsAmount))*float64(params.Price)) -
+		session.GameParams.Glass*params.CupsAmount - session.GameParams.Ice*params.IceAmount - session.GameParams.Stand*params.StandAmount
 
 	response.Day = session.CurDay
 	response.Profit = profit

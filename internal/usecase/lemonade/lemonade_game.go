@@ -31,8 +31,16 @@ func New(r GameRepo) *LemonadeGameUsecase {
 	}
 }
 
-func (u *LemonadeGameUsecase) CreateUser() string {
-	return u.repo.CreateUser()
+func (u *LemonadeGameUsecase) CreateUser(userName string) (string, error) {
+	return u.repo.CreateUser(userName)
+}
+
+func (u *LemonadeGameUsecase) SaveStatistics(userID string, result int64) error {
+	return u.repo.SaveResult(userID, result)
+}
+
+func (u *LemonadeGameUsecase) GetFriendsStatistics(sessionID string) error {
+	return nil
 }
 
 func (u *LemonadeGameUsecase) GetRandomWeather(userID string) (entity.Weather, error) {

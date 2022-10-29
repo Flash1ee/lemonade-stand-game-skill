@@ -23,10 +23,18 @@ func NewLemonadeRoutes(t usecase.LemonadeGameUsecase, l logger.Interface) *lemon
 	}
 }
 
-func (r lemonadeRoutes) Create(_ context.Context, _ *proto.Nothing) (*proto.CreateResult, error) {
-	user := r.t.CreateUser()
+func (r lemonadeRoutes) Create(_ context.Context, user *proto.User) (*proto.CreateResult, error) {
+	if user == nil {
+		r.l.Error("grpc - v1 - Create invalid request")
+		return nil, errors.New("invalid user")
+	}
+	u, err := r.t.CreateUser(user.Username)
+	if err != nil {
+		r.l.Error(fmt.Errorf("grpc - v1 - Create, err: %w", err))
+		return nil, err
+	}
 	return &proto.CreateResult{
-		Id: user,
+		Id: u,
 	}, nil
 }
 

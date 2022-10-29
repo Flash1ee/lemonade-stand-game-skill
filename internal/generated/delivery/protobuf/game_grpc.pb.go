@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LemonadeGameClient interface {
-	Create(ctx context.Context, in *Nothing, opts ...grpc.CallOption) (*CreateResult, error)
+	Create(ctx context.Context, in *User, opts ...grpc.CallOption) (*CreateResult, error)
 	RandomWeather(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Weather, error)
 	GetBalance(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Balance, error)
 	Calculate(ctx context.Context, in *CalculateRequest, opts ...grpc.CallOption) (*CalculateResponse, error)
@@ -36,7 +36,7 @@ func NewLemonadeGameClient(cc grpc.ClientConnInterface) LemonadeGameClient {
 	return &lemonadeGameClient{cc}
 }
 
-func (c *lemonadeGameClient) Create(ctx context.Context, in *Nothing, opts ...grpc.CallOption) (*CreateResult, error) {
+func (c *lemonadeGameClient) Create(ctx context.Context, in *User, opts ...grpc.CallOption) (*CreateResult, error) {
 	out := new(CreateResult)
 	err := c.cc.Invoke(ctx, "/game.LemonadeGame/Create", in, out, opts...)
 	if err != nil {
@@ -76,7 +76,7 @@ func (c *lemonadeGameClient) Calculate(ctx context.Context, in *CalculateRequest
 // All implementations should embed UnimplementedLemonadeGameServer
 // for forward compatibility
 type LemonadeGameServer interface {
-	Create(context.Context, *Nothing) (*CreateResult, error)
+	Create(context.Context, *User) (*CreateResult, error)
 	RandomWeather(context.Context, *GameID) (*Weather, error)
 	GetBalance(context.Context, *GameID) (*Balance, error)
 	Calculate(context.Context, *CalculateRequest) (*CalculateResponse, error)
@@ -86,7 +86,7 @@ type LemonadeGameServer interface {
 type UnimplementedLemonadeGameServer struct {
 }
 
-func (UnimplementedLemonadeGameServer) Create(context.Context, *Nothing) (*CreateResult, error) {
+func (UnimplementedLemonadeGameServer) Create(context.Context, *User) (*CreateResult, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
 func (UnimplementedLemonadeGameServer) RandomWeather(context.Context, *GameID) (*Weather, error) {
@@ -111,7 +111,7 @@ func RegisterLemonadeGameServer(s grpc.ServiceRegistrar, srv LemonadeGameServer)
 }
 
 func _LemonadeGame_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Nothing)
+	in := new(User)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -123,7 +123,7 @@ func _LemonadeGame_Create_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/game.LemonadeGame/Create",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LemonadeGameServer).Create(ctx, req.(*Nothing))
+		return srv.(LemonadeGameServer).Create(ctx, req.(*User))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -214,7 +214,7 @@ var LemonadeGame_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BotanicalGardenGameClient interface {
-	Create(ctx context.Context, in *Nothing, opts ...grpc.CallOption) (*CreateResult, error)
+	Create(ctx context.Context, in *User, opts ...grpc.CallOption) (*CreateResult, error)
 	RandomWeather(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Weather, error)
 	GetBalance(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Balance, error)
 	Calculate(ctx context.Context, in *CalculateRequest, opts ...grpc.CallOption) (*CalculateResponse, error)
@@ -228,7 +228,7 @@ func NewBotanicalGardenGameClient(cc grpc.ClientConnInterface) BotanicalGardenGa
 	return &botanicalGardenGameClient{cc}
 }
 
-func (c *botanicalGardenGameClient) Create(ctx context.Context, in *Nothing, opts ...grpc.CallOption) (*CreateResult, error) {
+func (c *botanicalGardenGameClient) Create(ctx context.Context, in *User, opts ...grpc.CallOption) (*CreateResult, error) {
 	out := new(CreateResult)
 	err := c.cc.Invoke(ctx, "/game.BotanicalGardenGame/Create", in, out, opts...)
 	if err != nil {
@@ -268,7 +268,7 @@ func (c *botanicalGardenGameClient) Calculate(ctx context.Context, in *Calculate
 // All implementations should embed UnimplementedBotanicalGardenGameServer
 // for forward compatibility
 type BotanicalGardenGameServer interface {
-	Create(context.Context, *Nothing) (*CreateResult, error)
+	Create(context.Context, *User) (*CreateResult, error)
 	RandomWeather(context.Context, *GameID) (*Weather, error)
 	GetBalance(context.Context, *GameID) (*Balance, error)
 	Calculate(context.Context, *CalculateRequest) (*CalculateResponse, error)
@@ -278,7 +278,7 @@ type BotanicalGardenGameServer interface {
 type UnimplementedBotanicalGardenGameServer struct {
 }
 
-func (UnimplementedBotanicalGardenGameServer) Create(context.Context, *Nothing) (*CreateResult, error) {
+func (UnimplementedBotanicalGardenGameServer) Create(context.Context, *User) (*CreateResult, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
 func (UnimplementedBotanicalGardenGameServer) RandomWeather(context.Context, *GameID) (*Weather, error) {
@@ -303,7 +303,7 @@ func RegisterBotanicalGardenGameServer(s grpc.ServiceRegistrar, srv BotanicalGar
 }
 
 func _BotanicalGardenGame_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Nothing)
+	in := new(User)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -315,7 +315,7 @@ func _BotanicalGardenGame_Create_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: "/game.BotanicalGardenGame/Create",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BotanicalGardenGameServer).Create(ctx, req.(*Nothing))
+		return srv.(BotanicalGardenGameServer).Create(ctx, req.(*User))
 	}
 	return interceptor(ctx, in, info, handler)
 }

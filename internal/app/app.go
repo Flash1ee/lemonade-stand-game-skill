@@ -2,10 +2,16 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
+
+	"github.com/evrone/go-clean-template/internal/usecase/repo/mongodb"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	grpc_v1 "github.com/evrone/go-clean-template/internal/controller/grpc/v1"
 	grpcserver "github.com/evrone/go-clean-template/pkg/grpc/server"
@@ -15,10 +21,7 @@ import (
 	"github.com/evrone/go-clean-template/config"
 	v1 "github.com/evrone/go-clean-template/internal/controller/http/v1"
 	"github.com/evrone/go-clean-template/internal/usecase/botanical_garden"
-	botanical_repo "github.com/evrone/go-clean-template/internal/usecase/botanical_garden/repo"
 	"github.com/evrone/go-clean-template/internal/usecase/lemonade"
-	lemonade_repo "github.com/evrone/go-clean-template/internal/usecase/lemonade/repo"
-
 	"github.com/evrone/go-clean-template/pkg/httpserver"
 	"github.com/evrone/go-clean-template/pkg/logger"
 )
@@ -34,12 +37,23 @@ func Run(cfg *config.Config) {
 	//}
 	//defer pg.Close()
 
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.MONGO.Timeout)*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, options.Client().SetMaxPoolSize(cfg.MONGO.PoolMax).ApplyURI(cfg.MONGO.URL))
+	if err != nil {
+		l.Fatal(fmt.Errorf("app - Run - mongo.Connect: %w", err))
+	}
+	defer func() {
+		err := client.Disconnect(ctx)
+		l.Warn(fmt.Errorf("app - Run - mongo.Disconnect: %w", err).Error())
+	}()
+
 	// Use case
 	lemonadeGameUsecase := usecase.New(
-		lemonade_repo.NewGameRepository(),
+		mongodb.NewGameRepository(client),
 	)
 	botanicalGardenUsecase := botanical_garden.New(
-		botanical_repo.NewGameRepository(),
+		mongodb.NewGameRepository(client),
 	)
 	// RabbitMQ RPC Server
 	//rmqRouter := amqprpc.NewRouter(translationUseCase)

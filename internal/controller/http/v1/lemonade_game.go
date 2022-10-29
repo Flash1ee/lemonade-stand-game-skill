@@ -29,20 +29,25 @@ func newLemonadeRoutes(handler *gin.RouterGroup, t usecase.LemonadeGameUsecase, 
 }
 
 func (r *lemonadeRoutes) createUser(c *gin.Context) {
-	user := r.t.CreateUser()
+	user, err := r.t.CreateUser("")
+	if err != nil {
+		r.l.Error(err, "http - v1 - createUser")
+		errorResponse(c, http.StatusBadRequest, "invalid get weather")
+		return
+	}
 	c.JSON(http.StatusOK, createUserResponse{user})
 }
 
 func (r *lemonadeRoutes) randomWeather(c *gin.Context) {
 	userID := c.Query("id")
 	if userID == "" {
-		r.l.Error("http - v1 - balance")
+		r.l.Error("http - v1 - randomWeather")
 		errorResponse(c, http.StatusForbidden, "userID not found")
 		return
 	}
 	weather, err := r.t.GetRandomWeather(userID)
 	if err != nil {
-		r.l.Error(err, "http - v1 - createUser")
+		r.l.Error(err, "http - v1 - randomWeather")
 		errorResponse(c, http.StatusBadRequest, "invalid get weather")
 		return
 	}

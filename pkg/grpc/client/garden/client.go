@@ -7,7 +7,7 @@ import (
 )
 
 type GardenGameClient interface {
-	Create(ctx context.Context) (string, error)
+	Create(ctx context.Context, username string) (string, error)
 	RandomWeather(ctx context.Context, userID string) (Weather, error)
 	GetBalance(ctx context.Context, userID string) (int64, error)
 	Calculate(ctx context.Context, data *DayParams) (DayResult, error)
@@ -17,8 +17,10 @@ type GardenGame struct {
 	client proto.BotanicalGardenGameClient
 }
 
-func (l *GardenGame) Create(ctx context.Context) (string, error) {
-	res, err := l.client.Create(ctx, &proto.Nothing{})
+func (l *GardenGame) Create(ctx context.Context, username string) (string, error) {
+	res, err := l.client.Create(ctx, &proto.User{
+		Username: username,
+	})
 	if err != nil {
 		return "", err
 	}

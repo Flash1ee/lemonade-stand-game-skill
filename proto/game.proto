@@ -43,15 +43,19 @@ message CalculateResponse {
   int64 Profit = 3;
 }
 
+message User {
+  string username = 1;
+}
+
 service LemonadeGame {
-  rpc Create(Nothing) returns (CreateResult);
+  rpc Create(User) returns (CreateResult);
   rpc RandomWeather(GameID) returns (Weather);
   rpc GetBalance(GameID) returns (Balance);
   rpc Calculate(CalculateRequest) returns (CalculateResponse);
 }
 
 service BotanicalGardenGame {
-  rpc Create(Nothing) returns (CreateResult);
+  rpc Create(User) returns (CreateResult);
   rpc RandomWeather(GameID) returns (Weather);
   rpc GetBalance(GameID) returns (Balance);
   rpc Calculate(CalculateRequest) returns (CalculateResponse);
