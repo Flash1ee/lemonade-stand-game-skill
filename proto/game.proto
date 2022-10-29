@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package lemonade_game;
+package game;
 
-option go_package = ".;lemonade_game";
+option go_package = ".;game";
 
 message Game {
   uint32 Id = 1;
@@ -48,6 +48,11 @@ service LemonadeGame {
   rpc RandomWeather(GameID) returns (Weather);
   rpc GetBalance(GameID) returns (Balance);
   rpc Calculate(CalculateRequest) returns (CalculateResponse);
+}
 
-
+service BotanicalGardenGame {
+  rpc Create(Nothing) returns (CreateResult);
+  rpc RandomWeather(GameID) returns (Weather);
+  rpc GetBalance(GameID) returns (Balance);
+  rpc Calculate(CalculateRequest) returns (CalculateResponse);
 }

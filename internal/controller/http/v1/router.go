@@ -4,6 +4,8 @@ package v1
 import (
 	"net/http"
 
+	"github.com/evrone/go-clean-template/internal/usecase/botanical_garden"
+	usecase "github.com/evrone/go-clean-template/internal/usecase/lemonade"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	swaggerFiles "github.com/swaggo/files"
@@ -11,7 +13,6 @@ import (
 
 	// Swagger docs.
 	_ "github.com/evrone/go-clean-template/docs"
-	"github.com/evrone/go-clean-template/internal/usecase"
 	"github.com/evrone/go-clean-template/pkg/logger"
 )
 
@@ -22,7 +23,7 @@ import (
 // @version     1.0
 // @host        localhost:8080
 // @BasePath    /v1
-func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.LemonadeGameUsecase) {
+func NewRouter(handler *gin.Engine, l logger.Interface, tl usecase.LemonadeGameUsecase, tb botanical_garden.BotanicalGardenGameUsecase) {
 	// Options
 	handler.Use(gin.Logger())
 	handler.Use(gin.Recovery())
@@ -40,6 +41,7 @@ func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.LemonadeGameUs
 	// Routers
 	h := handler.Group("")
 	{
-		newLemonadeRoutes(h, t, l)
+		newLemonadeRoutes(h, tl, l)
+		newBotanicalGardenRoutes(h, tb, l)
 	}
 }

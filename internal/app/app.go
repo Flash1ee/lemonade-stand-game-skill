@@ -14,29 +14,33 @@ import (
 
 	"github.com/evrone/go-clean-template/config"
 	v1 "github.com/evrone/go-clean-template/internal/controller/http/v1"
-	"github.com/evrone/go-clean-template/internal/usecase"
-	"github.com/evrone/go-clean-template/internal/usecase/repo"
+	"github.com/evrone/go-clean-template/internal/usecase/botanical_garden"
+	botanical_repo "github.com/evrone/go-clean-template/internal/usecase/botanical_garden/repo"
+	"github.com/evrone/go-clean-template/internal/usecase/lemonade"
+	lemonade_repo "github.com/evrone/go-clean-template/internal/usecase/lemonade/repo"
+
 	"github.com/evrone/go-clean-template/pkg/httpserver"
 	"github.com/evrone/go-clean-template/pkg/logger"
-	"github.com/evrone/go-clean-template/pkg/postgres"
 )
 
 // Run creates objects via constructors.
 func Run(cfg *config.Config) {
 	l := logger.New(cfg.Log.Level)
-
+	var err error
 	// Repository
-	pg, err := postgres.New(cfg.PG.URL, postgres.MaxPoolSize(cfg.PG.PoolMax))
-	if err != nil {
-		l.Fatal(fmt.Errorf("app - Run - postgres.New: %w", err))
-	}
-	defer pg.Close()
+	//pg, err := postgres.New(cfg.PG.URL, postgres.MaxPoolSize(cfg.PG.PoolMax))
+	//if err != nil {
+	//	l.Fatal(fmt.Errorf("app - Run - postgres.New: %w", err))
+	//}
+	//defer pg.Close()
 
 	// Use case
-	gameUsecase := usecase.New(
-		repo.NewGameRepository(),
+	lemonadeGameUsecase := usecase.New(
+		lemonade_repo.NewGameRepository(),
 	)
-
+	botanicalGardenUsecase := botanical_garden.New(
+		botanical_repo.NewGameRepository(),
+	)
 	// RabbitMQ RPC Server
 	//rmqRouter := amqprpc.NewRouter(translationUseCase)
 
@@ -47,12 +51,17 @@ func Run(cfg *config.Config) {
 
 	// HTTP Server
 	handler := gin.New()
-	v1.NewRouter(handler, l, *gameUsecase)
+	v1.NewRouter(handler, l, *lemonadeGameUsecase, *botanicalGardenUsecase)
 	httpServer := httpserver.New(handler, httpserver.Port(cfg.HTTP.Port))
 
 	// GRPC Server
 	grpcServer := grpc.NewServer()
-	gameGRPCServer := grpcserver.NewGameLemonadeGRPCServer(l, grpcServer, *grpc_v1.NewLemonadeRoutes(*gameUsecase, l))
+	gameGRPCServer := grpcserver.NewGameLemonadeGRPCServer(
+		l,
+		grpcServer,
+		*grpc_v1.NewLemonadeRoutes(*lemonadeGameUsecase, l),
+		*grpc_v1.NewBotanicalGardenRoutes(*botanicalGardenUsecase, l),
+	)
 	go func() {
 		_ = gameGRPCServer.StartGRPCServer(cfg.GRPC.Port)
 	}()

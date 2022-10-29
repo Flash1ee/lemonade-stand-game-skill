@@ -6,19 +6,19 @@ import (
 	"github.com/evrone/go-clean-template/internal/entity"
 	"github.com/gin-gonic/gin"
 
-	"github.com/evrone/go-clean-template/internal/usecase/lemonade"
+	usecase "github.com/evrone/go-clean-template/internal/usecase/botanical_garden"
 	"github.com/evrone/go-clean-template/pkg/logger"
 )
 
-type lemonadeRoutes struct {
-	t usecase.LemonadeGameUsecase
+type botanicalGardenRoutes struct {
+	t usecase.BotanicalGardenGameUsecase
 	l logger.Interface
 }
 
-func newLemonadeRoutes(handler *gin.RouterGroup, t usecase.LemonadeGameUsecase, l logger.Interface) {
-	r := &lemonadeRoutes{t, l}
+func newBotanicalGardenRoutes(handler *gin.RouterGroup, t usecase.BotanicalGardenGameUsecase, l logger.Interface) {
+	r := &botanicalGardenRoutes{t, l}
 
-	h := handler.Group("lemonade")
+	h := handler.Group("garden")
 	{
 		h.POST("/id", r.createUser)
 		h.GET("/weather", r.randomWeather)
@@ -28,12 +28,12 @@ func newLemonadeRoutes(handler *gin.RouterGroup, t usecase.LemonadeGameUsecase, 
 	}
 }
 
-func (r *lemonadeRoutes) createUser(c *gin.Context) {
+func (r *botanicalGardenRoutes) createUser(c *gin.Context) {
 	user := r.t.CreateUser()
 	c.JSON(http.StatusOK, createUserResponse{user})
 }
 
-func (r *lemonadeRoutes) randomWeather(c *gin.Context) {
+func (r *botanicalGardenRoutes) randomWeather(c *gin.Context) {
 	userID := c.Query("id")
 	if userID == "" {
 		r.l.Error("http - v1 - balance")
@@ -52,7 +52,7 @@ func (r *lemonadeRoutes) randomWeather(c *gin.Context) {
 	})
 }
 
-func (r *lemonadeRoutes) balance(c *gin.Context) {
+func (r *botanicalGardenRoutes) balance(c *gin.Context) {
 	userID := c.Query("id")
 	if userID == "" {
 		r.l.Error("http - v1 - balance")
@@ -70,7 +70,7 @@ func (r *lemonadeRoutes) balance(c *gin.Context) {
 	})
 }
 
-func (r *lemonadeRoutes) calculate(c *gin.Context) {
+func (r *botanicalGardenRoutes) calculate(c *gin.Context) {
 	userID := c.Query("id")
 	if userID == "" {
 		r.l.Error("http - v1 - balance")

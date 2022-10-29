@@ -5,6 +5,7 @@ import (
 	"math/big"
 
 	"github.com/evrone/go-clean-template/internal/entity"
+	utils "github.com/evrone/go-clean-template/pkg"
 )
 
 const (
@@ -98,7 +99,7 @@ func (u *LemonadeGameUsecase) Calculate(params entity.DayParams, userID string) 
 	res, _ = rand.Int(rand.Reader, big.NewInt(1000))
 
 	coef += float64(res.Int64())
-	coef = min(coef, 1.0)
+	coef = utils.Min(coef, 1.0)
 
 	profit := params.CupsAmount*params.Price - session.GameParams.Glass*params.CupsAmount - session.GameParams.Ice*params.IceAmount - session.GameParams.Stand*params.StandAmount
 	profit = int64(float64(profit) * coef)

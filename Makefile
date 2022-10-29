@@ -26,8 +26,10 @@ swag-v1: ### swag init
 .PHONY: swag-v1
 
 run: swag-v1 ### swag run
+	#go mod tidy && go mod download && \
+#	DISABLE_SWAGGER_HTTP_HANDLER='' GIN_MODE=debug CGO_ENABLED=0 go run -tags migrate ./cmd/app
 	go mod tidy && go mod download && \
-	DISABLE_SWAGGER_HTTP_HANDLER='' GIN_MODE=debug CGO_ENABLED=0 go run -tags migrate ./cmd/app
+		DISABLE_SWAGGER_HTTP_HANDLER='' GIN_MODE=debug CGO_ENABLED=0 go run ./cmd/app
 .PHONY: run
 
 docker-rm-volume: ### remove docker volume
@@ -65,3 +67,13 @@ migrate-create:  ### create new migration
 migrate-up: ### migration up
 	migrate -path migrations -database '$(PG_URL)?sslmode=disable' up
 .PHONY: migrate-up
+
+ROOT=$(PWD)
+
+gen-proto:
+	protoc -I=${ROOT}/proto --go_out=${ROOT}/internal/generated/delivery/grpc/protobuf --go_opt=paths=source_relative \
+    --go-grpc_out=${ROOT}/internal/generated/delivery/grpc/protobuf --go-grpc_opt=require_unimplemented_servers=false ${ROOT}/proto/lemonade.proto
+
+gen-proto-garden:
+	./bin/protoc -I=${ROOT}/proto --go_out=${ROOT}/internal/generated/delivery/grpc/protobuf --go_opt=paths=source_relative \
+    --go-grpc_out=${ROOT}/internal/generated/delivery/grpc/protobuf --go-grpc_opt=require_unimplemented_servers=false ${ROOT}/proto/botanical_garden.proto
