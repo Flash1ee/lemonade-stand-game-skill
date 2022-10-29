@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/Eun/go-hit v0.5.23
-	github.com/Masterminds/squirrel v1.5.2
+	github.com/Masterminds/squirrel v1.5.3
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-vk-api/vk v0.0.0-20200129183856-014d9b8adc96
 	github.com/golang-migrate/migrate/v4 v4.15.1
