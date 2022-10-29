@@ -127,7 +127,6 @@ func (repo *GameRepository) GetResult(sessiondID string) ([]entity.Statistics, e
 	if len(results) == 0 {
 		return nil, nil
 	}
-	results = results[:5]
 	for _, v := range results {
 		if v.VKUserId == userRes.VKUserId {
 			return results, nil
