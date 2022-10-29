@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type GameRepository struct {
@@ -111,9 +112,11 @@ func (repo *GameRepository) GetResult(sessiondID string) ([]entity.Statistics, e
 	if err != nil {
 		return nil, err
 	}
-	results := make([]entity.Statistics, 0, 5)
-	//opts := options.Find().SetSort(bson.D{{"result", 1}})
-	cur, err := repo.collectStatistics.Find(repo.ctx, bson.D{{}})
+
+	var results []entity.Statistics
+	filter := bson.D{}
+	opts := options.Find().SetSort(bson.D{{"result", 1}})
+	cur, err := repo.collectStatistics.Find(repo.ctx, filter, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +127,12 @@ func (repo *GameRepository) GetResult(sessiondID string) ([]entity.Statistics, e
 	if len(results) == 0 {
 		return nil, nil
 	}
-
+	results = results[:5]
+	for _, v := range results {
+		if v.VKUserId == userRes.VKUserId {
+			return results, nil
+		}
+	}
 	results[len(results)-1] = userRes
-	return results[:5], nil
+	return results, nil
 }
