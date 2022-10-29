@@ -7,23 +7,23 @@ import (
 
 	"github.com/evrone/go-clean-template/internal/entity"
 	proto "github.com/evrone/go-clean-template/internal/generated/delivery/protobuf"
-	usecase "github.com/evrone/go-clean-template/internal/usecase/lemonade"
+	usecase "github.com/evrone/go-clean-template/internal/usecase/botanical_garden"
 	"github.com/evrone/go-clean-template/pkg/logger"
 )
 
-type lemonadeRoutes struct {
-	t usecase.LemonadeGameUsecase
+type botanicalGardenRoutes struct {
+	t usecase.BotanicalGardenGameUsecase
 	l logger.Interface
 }
 
-func NewLemonadeRoutes(t usecase.LemonadeGameUsecase, l logger.Interface) *lemonadeRoutes {
-	return &lemonadeRoutes{
+func NewBotanicalGardenRoutes(t usecase.BotanicalGardenGameUsecase, l logger.Interface) *botanicalGardenRoutes {
+	return &botanicalGardenRoutes{
 		t: t,
 		l: l,
 	}
 }
 
-func (r lemonadeRoutes) Create(_ context.Context, user *proto.User) (*proto.CreateResult, error) {
+func (r botanicalGardenRoutes) Create(_ context.Context, user *proto.User) (*proto.CreateResult, error) {
 	if user == nil {
 		r.l.Error("grpc - v1 - Create invalid request")
 		return nil, errors.New("invalid user")
@@ -38,7 +38,7 @@ func (r lemonadeRoutes) Create(_ context.Context, user *proto.User) (*proto.Crea
 	}, nil
 }
 
-func (r lemonadeRoutes) RandomWeather(_ context.Context, id *proto.GameID) (*proto.Weather, error) {
+func (r botanicalGardenRoutes) RandomWeather(_ context.Context, id *proto.GameID) (*proto.Weather, error) {
 	if id == nil {
 		r.l.Error("grpc - v1 - RandomWeather invalid request")
 		return nil, errors.New("invalid game id")
@@ -55,7 +55,7 @@ func (r lemonadeRoutes) RandomWeather(_ context.Context, id *proto.GameID) (*pro
 	}, nil
 }
 
-func (r lemonadeRoutes) GetBalance(_ context.Context, id *proto.GameID) (*proto.Balance, error) {
+func (r botanicalGardenRoutes) GetBalance(_ context.Context, id *proto.GameID) (*proto.Balance, error) {
 	if id == nil {
 		r.l.Error("grpc - v1 - GetBalance invalid request")
 		return nil, errors.New("invalid game id")
@@ -71,7 +71,7 @@ func (r lemonadeRoutes) GetBalance(_ context.Context, id *proto.GameID) (*proto.
 	}, nil
 }
 
-func (r lemonadeRoutes) Calculate(_ context.Context, data *proto.CalculateRequest) (*proto.CalculateResponse, error) {
+func (r botanicalGardenRoutes) Calculate(_ context.Context, data *proto.CalculateRequest) (*proto.CalculateResponse, error) {
 	if data == nil {
 		r.l.Error("grpc - v1 - Calculate invalid request")
 		return nil, errors.New("invalid game data")
@@ -89,7 +89,7 @@ func (r lemonadeRoutes) Calculate(_ context.Context, data *proto.CalculateReques
 		Price:       data.Price,
 	}, userID)
 	if err != nil {
-		r.l.Error(fmt.Errorf("grpc - v1 - Calculate, err: %w", err))
+		r.l.Error(err, "grpc - v1 - Calculate")
 		return nil, errors.New("error calculate")
 	}
 	return &proto.CalculateResponse{
@@ -99,7 +99,7 @@ func (r lemonadeRoutes) Calculate(_ context.Context, data *proto.CalculateReques
 	}, nil
 }
 
-func (r lemonadeRoutes) SaveResult(_ context.Context, result *proto.SaveResultMessage) (*proto.Nothing, error) {
+func (r botanicalGardenRoutes) SaveResult(_ context.Context, result *proto.SaveResultMessage) (*proto.Nothing, error) {
 	if result == nil {
 		r.l.Error("grpc - v1 - SaveResult invalid request")
 		return &proto.Nothing{}, errors.New("invalid result data")
@@ -112,12 +112,12 @@ func (r lemonadeRoutes) SaveResult(_ context.Context, result *proto.SaveResultMe
 	resultGame := result.Result
 	if err := r.t.SaveStatistics(userID, resultGame); err != nil {
 		r.l.Error(fmt.Errorf("grpc - v1 - SaveResult, err: %w", err))
-		return &proto.Nothing{}, errors.New("error SaveResult")
+		return nil, errors.New("error SaveResult")
 	}
 	return &proto.Nothing{}, nil
 }
 
-func (r lemonadeRoutes) GetResult(_ context.Context, userID *proto.GameID) (*proto.ResultResponses, error) {
+func (r botanicalGardenRoutes) GetResult(_ context.Context, userID *proto.GameID) (*proto.ResultResponses, error) {
 	if userID == nil {
 		r.l.Error("grpc - v1 - GetResult invalid request")
 		return &proto.ResultResponses{}, errors.New("invalid game id")
@@ -131,15 +131,4 @@ func (r lemonadeRoutes) GetResult(_ context.Context, userID *proto.GameID) (*pro
 		Results: convertResults(data),
 	}
 	return res, nil
-}
-
-func convertResults(stats []entity.Statistics) []*proto.Result {
-	res := make([]*proto.Result, 0, len(stats))
-	for _, val := range stats {
-		res = append(res, &proto.Result{
-			Username: val.VKUserId,
-			Result:   val.Result,
-		})
-	}
-	return res
 }

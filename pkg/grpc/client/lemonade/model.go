@@ -1,4 +1,4 @@
-package client
+package lemonade
 
 type Weather struct {
 	Wtype      string
@@ -16,4 +16,9 @@ type DayResult struct {
 	Balance int64
 	Profit  int64
 	Day     int64
+}
+
+type StatResult struct {
+	UserName string
+	Result   int64
 }

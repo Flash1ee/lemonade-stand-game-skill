@@ -1,24 +1,25 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/evrone/go-clean-template/internal/entity"
 	"github.com/gin-gonic/gin"
 
-	"github.com/evrone/go-clean-template/internal/usecase/lemonade"
+	usecase "github.com/evrone/go-clean-template/internal/usecase/botanical_garden"
 	"github.com/evrone/go-clean-template/pkg/logger"
 )
 
-type lemonadeRoutes struct {
-	t usecase.LemonadeGameUsecase
+type botanicalGardenRoutes struct {
+	t usecase.BotanicalGardenGameUsecase
 	l logger.Interface
 }
 
-func newLemonadeRoutes(handler *gin.RouterGroup, t usecase.LemonadeGameUsecase, l logger.Interface) {
-	r := &lemonadeRoutes{t, l}
+func newBotanicalGardenRoutes(handler *gin.RouterGroup, t usecase.BotanicalGardenGameUsecase, l logger.Interface) {
+	r := &botanicalGardenRoutes{t, l}
 
-	h := handler.Group("lemonade")
+	h := handler.Group("garden")
 	{
 		h.POST("/id", r.createUser)
 		h.GET("/weather", r.randomWeather)
@@ -28,26 +29,25 @@ func newLemonadeRoutes(handler *gin.RouterGroup, t usecase.LemonadeGameUsecase, 
 	}
 }
 
-func (r *lemonadeRoutes) createUser(c *gin.Context) {
+func (r *botanicalGardenRoutes) createUser(c *gin.Context) {
 	user, err := r.t.CreateUser("")
 	if err != nil {
-		r.l.Error(err, "http - v1 - createUser")
-		errorResponse(c, http.StatusBadRequest, "invalid get weather")
-		return
+		r.l.Error(fmt.Errorf("http - v1 - Create, err: %w", err))
+		errorResponse(c, http.StatusInternalServerError, "create user error")
 	}
 	c.JSON(http.StatusOK, createUserResponse{user})
 }
 
-func (r *lemonadeRoutes) randomWeather(c *gin.Context) {
+func (r *botanicalGardenRoutes) randomWeather(c *gin.Context) {
 	userID := c.Query("id")
 	if userID == "" {
-		r.l.Error("http - v1 - randomWeather")
+		r.l.Error("http - v1 - balance")
 		errorResponse(c, http.StatusForbidden, "userID not found")
 		return
 	}
 	weather, err := r.t.GetRandomWeather(userID)
 	if err != nil {
-		r.l.Error(err, "http - v1 - randomWeather")
+		r.l.Error(err, "http - v1 - createUser")
 		errorResponse(c, http.StatusBadRequest, "invalid get weather")
 		return
 	}
@@ -57,7 +57,7 @@ func (r *lemonadeRoutes) randomWeather(c *gin.Context) {
 	})
 }
 
-func (r *lemonadeRoutes) balance(c *gin.Context) {
+func (r *botanicalGardenRoutes) balance(c *gin.Context) {
 	userID := c.Query("id")
 	if userID == "" {
 		r.l.Error("http - v1 - balance")
@@ -75,7 +75,7 @@ func (r *lemonadeRoutes) balance(c *gin.Context) {
 	})
 }
 
-func (r *lemonadeRoutes) calculate(c *gin.Context) {
+func (r *botanicalGardenRoutes) calculate(c *gin.Context) {
 	userID := c.Query("id")
 	if userID == "" {
 		r.l.Error("http - v1 - balance")

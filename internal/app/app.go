@@ -2,10 +2,16 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
+
+	"github.com/evrone/go-clean-template/internal/usecase/repo/mongodb"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	grpc_v1 "github.com/evrone/go-clean-template/internal/controller/grpc/v1"
 	grpcserver "github.com/evrone/go-clean-template/pkg/grpc/server"
@@ -14,29 +20,41 @@ import (
 
 	"github.com/evrone/go-clean-template/config"
 	v1 "github.com/evrone/go-clean-template/internal/controller/http/v1"
-	"github.com/evrone/go-clean-template/internal/usecase"
-	"github.com/evrone/go-clean-template/internal/usecase/repo"
+	"github.com/evrone/go-clean-template/internal/usecase/botanical_garden"
+	"github.com/evrone/go-clean-template/internal/usecase/lemonade"
 	"github.com/evrone/go-clean-template/pkg/httpserver"
 	"github.com/evrone/go-clean-template/pkg/logger"
-	"github.com/evrone/go-clean-template/pkg/postgres"
 )
 
 // Run creates objects via constructors.
 func Run(cfg *config.Config) {
 	l := logger.New(cfg.Log.Level)
-
+	var err error
 	// Repository
-	pg, err := postgres.New(cfg.PG.URL, postgres.MaxPoolSize(cfg.PG.PoolMax))
+	//pg, err := postgres.New(cfg.PG.URL, postgres.MaxPoolSize(cfg.PG.PoolMax))
+	//if err != nil {
+	//	l.Fatal(fmt.Errorf("app - Run - postgres.New: %w", err))
+	//}
+	//defer pg.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.MONGO.Timeout)*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, options.Client().SetMaxPoolSize(cfg.MONGO.PoolMax).ApplyURI(cfg.MONGO.URL))
 	if err != nil {
-		l.Fatal(fmt.Errorf("app - Run - postgres.New: %w", err))
+		l.Fatal(fmt.Errorf("app - Run - mongo.Connect: %w", err))
 	}
-	defer pg.Close()
+	defer func() {
+		err := client.Disconnect(ctx)
+		l.Warn(fmt.Errorf("app - Run - mongo.Disconnect: %w", err).Error())
+	}()
 
 	// Use case
-	gameUsecase := usecase.New(
-		repo.NewGameRepository(),
+	lemonadeGameUsecase := usecase.New(
+		mongodb.NewGameRepository(client),
 	)
-
+	botanicalGardenUsecase := botanical_garden.New(
+		mongodb.NewGameRepository(client),
+	)
 	// RabbitMQ RPC Server
 	//rmqRouter := amqprpc.NewRouter(translationUseCase)
 
@@ -47,12 +65,17 @@ func Run(cfg *config.Config) {
 
 	// HTTP Server
 	handler := gin.New()
-	v1.NewRouter(handler, l, *gameUsecase)
+	v1.NewRouter(handler, l, *lemonadeGameUsecase, *botanicalGardenUsecase)
 	httpServer := httpserver.New(handler, httpserver.Port(cfg.HTTP.Port))
 
 	// GRPC Server
 	grpcServer := grpc.NewServer()
-	gameGRPCServer := grpcserver.NewGameLemonadeGRPCServer(l, grpcServer, *grpc_v1.NewLemonadeRoutes(*gameUsecase, l))
+	gameGRPCServer := grpcserver.NewGameLemonadeGRPCServer(
+		l,
+		grpcServer,
+		*grpc_v1.NewLemonadeRoutes(*lemonadeGameUsecase, l),
+		*grpc_v1.NewBotanicalGardenRoutes(*botanicalGardenUsecase, l),
+	)
 	go func() {
 		_ = gameGRPCServer.StartGRPCServer(cfg.GRPC.Port)
 	}()

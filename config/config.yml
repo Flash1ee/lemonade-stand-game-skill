@@ -15,6 +15,10 @@ logger:
 postgres:
   pool_max: 2
 
+mongo:
+  pool_max: 10
+  timeout: 20
+
 rabbitmq:
   rpc_server_exchange: 'rpc_server'
   rpc_client_exchange: 'rpc_client'
