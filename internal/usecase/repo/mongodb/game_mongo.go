@@ -4,12 +4,10 @@ import (
 	"context"
 	"errors"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-
 	"github.com/evrone/go-clean-template/internal/entity"
 	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type GameRepository struct {
@@ -114,8 +112,8 @@ func (repo *GameRepository) GetResult(sessiondID string) ([]entity.Statistics, e
 		return nil, err
 	}
 	results := make([]entity.Statistics, 0, 5)
-	opts := options.Find().SetSort(bson.D{{"result", 1}})
-	cur, err := repo.collectStatistics.Find(repo.ctx, opts)
+	//opts := options.Find().SetSort(bson.D{{"result", 1}})
+	cur, err := repo.collectStatistics.Find(repo.ctx, bson.D{{}})
 	if err != nil {
 		return nil, err
 	}
