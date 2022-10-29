@@ -13,6 +13,6 @@ type (
 		SetDayWeather(userID string, weather entity.Weather) error
 		NextDay(userID string, newBalance int64) error
 		SaveResult(sessionID string, result int64) error
-		GetFriendsResult(friendsId []string) ([]entity.Statistics, error)
+		GetResult(userID string) ([]entity.Statistics, error)
 	}
 )

@@ -39,8 +39,8 @@ func (u *BotanicalGardenGameUsecase) SaveStatistics(userID string, result int64)
 	return u.repo.SaveResult(userID, result)
 }
 
-func (u *BotanicalGardenGameUsecase) GetFriendsStatistics(sessionID string) error {
-	return nil
+func (u *BotanicalGardenGameUsecase) GetStatistics(userID string) ([]entity.Statistics, error) {
+	return u.repo.GetResult(userID)
 }
 
 func (u *BotanicalGardenGameUsecase) GetRandomWeather(userID string) (entity.Weather, error) {
@@ -122,6 +122,6 @@ func (u *BotanicalGardenGameUsecase) Calculate(params entity.DayParams, userID s
 
 	response.Day = session.CurDay
 	response.Profit = profit
-	response.Balance = session.Balance - profit
+	response.Balance = session.Balance + profit
 	return response, u.repo.NextDay(userID, response.Balance)
 }

@@ -98,3 +98,37 @@ func (r botanicalGardenRoutes) Calculate(_ context.Context, data *proto.Calculat
 		Profit:  res.Profit,
 	}, nil
 }
+
+func (r botanicalGardenRoutes) SaveResult(_ context.Context, result *proto.SaveResultMessage) (*proto.Nothing, error) {
+	if result == nil {
+		r.l.Error("grpc - v1 - SaveResult invalid request")
+		return &proto.Nothing{}, errors.New("invalid result data")
+	}
+	if result.ID == nil {
+		r.l.Error("grpc - v1 - SaveResult invalid request")
+		return &proto.Nothing{}, errors.New("invalid game id")
+	}
+	userID := result.ID.Id
+	resultGame := result.Result
+	if err := r.t.SaveStatistics(userID, resultGame); err != nil {
+		r.l.Error(fmt.Errorf("grpc - v1 - SaveResult, err: %w", err))
+		return nil, errors.New("error SaveResult")
+	}
+	return &proto.Nothing{}, nil
+}
+
+func (r botanicalGardenRoutes) GetResult(_ context.Context, userID *proto.GameID) (*proto.ResultResponses, error) {
+	if userID == nil {
+		r.l.Error("grpc - v1 - GetResult invalid request")
+		return &proto.ResultResponses{}, errors.New("invalid game id")
+	}
+	data, err := r.t.GetStatistics(userID.Id)
+	if err != nil {
+		r.l.Error(fmt.Errorf("grpc - v1 - GetResult, err: %w", err))
+		return &proto.ResultResponses{}, errors.New("internal error")
+	}
+	res := &proto.ResultResponses{
+		Results: convertResults(data),
+	}
+	return res, nil
+}

@@ -6,6 +6,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/evrone/go-clean-template/internal/entity"
 	"github.com/google/uuid"
@@ -102,22 +103,28 @@ func (repo *GameRepository) SaveResult(sessionID string, result int64) error {
 	return err
 }
 
-func (repo *GameRepository) GetFriendsResult(friendsId []string) ([]entity.Statistics, error) {
-	result := make([]entity.Statistics, 0)
-
-	for _, friendId := range friendsId {
-		friend := entity.Statistics{}
-		err := repo.collectUsers.FindOne(repo.ctx,
-			bson.D{{"vk_user_id", friendId}}).Decode(&friend)
-
-		if err != nil {
-			if err == mongo.ErrNoDocuments {
-				return nil, errors.New("not found user")
-			}
-			return nil, err
-		}
-		result = append(result, friend)
+func (repo *GameRepository) GetResult(userID string) ([]entity.Statistics, error) {
+	userRes := entity.Statistics{}
+	err := repo.collectStatistics.FindOne(repo.ctx,
+		bson.D{{"vk_user_id", userID}}).
+		Decode(&userRes)
+	if err != nil {
+		return nil, err
+	}
+	results := make([]entity.Statistics, 0, 5)
+	opts := options.Find().SetSort(bson.D{{"rating", 1}})
+	cur, err := repo.collectStatistics.Find(repo.ctx, opts)
+	if err != nil {
+		return nil, err
+	}
+	err = cur.All(repo.ctx, &results)
+	if err != nil {
+		return nil, err
+	}
+	if len(results) == 0 {
+		return nil, nil
 	}
 
-	return result, nil
+	results[len(results)-1] = userRes
+	return results[:5], nil
 }
