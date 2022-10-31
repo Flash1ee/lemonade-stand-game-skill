@@ -2,8 +2,6 @@ package mongodb
 
 import (
 	"context"
-	"errors"
-
 	"github.com/evrone/go-clean-template/internal/entity"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
@@ -50,7 +48,7 @@ func (repo *GameRepository) GetSession(sessionID string) (entity.Session, error)
 
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return entity.Session{}, errors.New("not found user")
+			return entity.Session{}, ErrorUserNotFound
 		}
 		return entity.Session{}, err
 	}
@@ -103,35 +101,44 @@ func (repo *GameRepository) SaveResult(sessionID string, result int64) error {
 }
 
 func (repo *GameRepository) GetResult(sessiondID string) ([]entity.Statistics, error) {
+	var results []entity.Statistics
+	filter := bson.D{}
+	opts := options.Find().SetSort(bson.D{{"result", -1}})
+	cur, err := repo.collectStatistics.Find(repo.ctx, filter, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	err = cur.All(repo.ctx, &results)
+	if err != nil {
+		return nil, err
+	}
+	
+	if len(results) == 0 {
+		return nil, nil
+	}
+
 	session, err := repo.GetSession(sessiondID)
+	if err != nil && err != ErrorUserNotFound {
+		return nil, err
+	}
+
+	for _, v := range results {
+		if v.VKUserId == session.VKUserId {
+			return results, nil
+		}
+	}
 
 	userRes := entity.Statistics{}
 	err = repo.collectStatistics.FindOne(repo.ctx,
 		bson.D{{"vk_user_id", session.VKUserId}}).
 		Decode(&userRes)
-	if err != nil {
+
+	if err == nil {
+		results[len(results)-1] = userRes
+	} else if err != mongo.ErrNoDocuments {
 		return nil, err
 	}
 
-	var results []entity.Statistics
-	filter := bson.D{}
-	opts := options.Find().SetSort(bson.D{{"result", 1}})
-	cur, err := repo.collectStatistics.Find(repo.ctx, filter, opts)
-	if err != nil {
-		return nil, err
-	}
-	err = cur.All(repo.ctx, &results)
-	if err != nil {
-		return nil, err
-	}
-	if len(results) == 0 {
-		return nil, nil
-	}
-	for _, v := range results {
-		if v.VKUserId == userRes.VKUserId {
-			return results, nil
-		}
-	}
-	results[len(results)-1] = userRes
 	return results, nil
 }
