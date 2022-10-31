@@ -545,3 +545,555 @@ var BotanicalGardenGame_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "game.proto",
 }
+
+// TreeGameClient is the client API for TreeGame service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type TreeGameClient interface {
+	RandomWeather(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Weather, error)
+	RandomTemperature(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Temperature, error)
+	BuyWater(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error)
+	BuyWindShelter(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error)
+	BuyGreenHouse(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error)
+	BuySpraying(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error)
+	BuyMedicalKit(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error)
+	BuyAntiRotAgent(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error)
+	BuyFertilizer(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error)
+	TreeStat(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Tree, error)
+	DayResult(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*TreeDayResult, error)
+	GetBalance(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Balance, error)
+	SaveResult(ctx context.Context, in *SaveResultMessage, opts ...grpc.CallOption) (*Nothing, error)
+	GetResult(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*ResultResponses, error)
+}
+
+type treeGameClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewTreeGameClient(cc grpc.ClientConnInterface) TreeGameClient {
+	return &treeGameClient{cc}
+}
+
+func (c *treeGameClient) RandomWeather(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Weather, error) {
+	out := new(Weather)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/RandomWeather", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) RandomTemperature(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Temperature, error) {
+	out := new(Temperature)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/RandomTemperature", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) BuyWater(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error) {
+	out := new(ShopResult)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/BuyWater", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) BuyWindShelter(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error) {
+	out := new(ShopResult)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/BuyWindShelter", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) BuyGreenHouse(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error) {
+	out := new(ShopResult)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/BuyGreenHouse", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) BuySpraying(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error) {
+	out := new(ShopResult)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/BuySpraying", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) BuyMedicalKit(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error) {
+	out := new(ShopResult)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/BuyMedicalKit", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) BuyAntiRotAgent(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error) {
+	out := new(ShopResult)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/BuyAntiRotAgent", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) BuyFertilizer(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error) {
+	out := new(ShopResult)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/BuyFertilizer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) TreeStat(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Tree, error) {
+	out := new(Tree)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/TreeStat", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) DayResult(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*TreeDayResult, error) {
+	out := new(TreeDayResult)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/DayResult", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) GetBalance(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Balance, error) {
+	out := new(Balance)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/GetBalance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) SaveResult(ctx context.Context, in *SaveResultMessage, opts ...grpc.CallOption) (*Nothing, error) {
+	out := new(Nothing)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/SaveResult", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *treeGameClient) GetResult(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*ResultResponses, error) {
+	out := new(ResultResponses)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/GetResult", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// TreeGameServer is the server API for TreeGame service.
+// All implementations should embed UnimplementedTreeGameServer
+// for forward compatibility
+type TreeGameServer interface {
+	RandomWeather(context.Context, *GameID) (*Weather, error)
+	RandomTemperature(context.Context, *GameID) (*Temperature, error)
+	BuyWater(context.Context, *Shop) (*ShopResult, error)
+	BuyWindShelter(context.Context, *Shop) (*ShopResult, error)
+	BuyGreenHouse(context.Context, *Shop) (*ShopResult, error)
+	BuySpraying(context.Context, *Shop) (*ShopResult, error)
+	BuyMedicalKit(context.Context, *Shop) (*ShopResult, error)
+	BuyAntiRotAgent(context.Context, *Shop) (*ShopResult, error)
+	BuyFertilizer(context.Context, *Shop) (*ShopResult, error)
+	TreeStat(context.Context, *GameID) (*Tree, error)
+	DayResult(context.Context, *GameID) (*TreeDayResult, error)
+	GetBalance(context.Context, *GameID) (*Balance, error)
+	SaveResult(context.Context, *SaveResultMessage) (*Nothing, error)
+	GetResult(context.Context, *GameID) (*ResultResponses, error)
+}
+
+// UnimplementedTreeGameServer should be embedded to have forward compatible implementations.
+type UnimplementedTreeGameServer struct {
+}
+
+func (UnimplementedTreeGameServer) RandomWeather(context.Context, *GameID) (*Weather, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RandomWeather not implemented")
+}
+func (UnimplementedTreeGameServer) RandomTemperature(context.Context, *GameID) (*Temperature, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RandomTemperature not implemented")
+}
+func (UnimplementedTreeGameServer) BuyWater(context.Context, *Shop) (*ShopResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BuyWater not implemented")
+}
+func (UnimplementedTreeGameServer) BuyWindShelter(context.Context, *Shop) (*ShopResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BuyWindShelter not implemented")
+}
+func (UnimplementedTreeGameServer) BuyGreenHouse(context.Context, *Shop) (*ShopResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BuyGreenHouse not implemented")
+}
+func (UnimplementedTreeGameServer) BuySpraying(context.Context, *Shop) (*ShopResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BuySpraying not implemented")
+}
+func (UnimplementedTreeGameServer) BuyMedicalKit(context.Context, *Shop) (*ShopResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BuyMedicalKit not implemented")
+}
+func (UnimplementedTreeGameServer) BuyAntiRotAgent(context.Context, *Shop) (*ShopResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BuyAntiRotAgent not implemented")
+}
+func (UnimplementedTreeGameServer) BuyFertilizer(context.Context, *Shop) (*ShopResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BuyFertilizer not implemented")
+}
+func (UnimplementedTreeGameServer) TreeStat(context.Context, *GameID) (*Tree, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TreeStat not implemented")
+}
+func (UnimplementedTreeGameServer) DayResult(context.Context, *GameID) (*TreeDayResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DayResult not implemented")
+}
+func (UnimplementedTreeGameServer) GetBalance(context.Context, *GameID) (*Balance, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBalance not implemented")
+}
+func (UnimplementedTreeGameServer) SaveResult(context.Context, *SaveResultMessage) (*Nothing, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SaveResult not implemented")
+}
+func (UnimplementedTreeGameServer) GetResult(context.Context, *GameID) (*ResultResponses, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetResult not implemented")
+}
+
+// UnsafeTreeGameServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to TreeGameServer will
+// result in compilation errors.
+type UnsafeTreeGameServer interface {
+	mustEmbedUnimplementedTreeGameServer()
+}
+
+func RegisterTreeGameServer(s grpc.ServiceRegistrar, srv TreeGameServer) {
+	s.RegisterService(&TreeGame_ServiceDesc, srv)
+}
+
+func _TreeGame_RandomWeather_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GameID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).RandomWeather(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/RandomWeather",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).RandomWeather(ctx, req.(*GameID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_RandomTemperature_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GameID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).RandomTemperature(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/RandomTemperature",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).RandomTemperature(ctx, req.(*GameID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_BuyWater_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Shop)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).BuyWater(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/BuyWater",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).BuyWater(ctx, req.(*Shop))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_BuyWindShelter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Shop)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).BuyWindShelter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/BuyWindShelter",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).BuyWindShelter(ctx, req.(*Shop))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_BuyGreenHouse_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Shop)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).BuyGreenHouse(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/BuyGreenHouse",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).BuyGreenHouse(ctx, req.(*Shop))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_BuySpraying_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Shop)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).BuySpraying(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/BuySpraying",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).BuySpraying(ctx, req.(*Shop))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_BuyMedicalKit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Shop)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).BuyMedicalKit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/BuyMedicalKit",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).BuyMedicalKit(ctx, req.(*Shop))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_BuyAntiRotAgent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Shop)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).BuyAntiRotAgent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/BuyAntiRotAgent",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).BuyAntiRotAgent(ctx, req.(*Shop))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_BuyFertilizer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Shop)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).BuyFertilizer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/BuyFertilizer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).BuyFertilizer(ctx, req.(*Shop))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_TreeStat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GameID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).TreeStat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/TreeStat",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).TreeStat(ctx, req.(*GameID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_DayResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GameID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).DayResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/DayResult",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).DayResult(ctx, req.(*GameID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_GetBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GameID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).GetBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/GetBalance",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).GetBalance(ctx, req.(*GameID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_SaveResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SaveResultMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).SaveResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/SaveResult",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).SaveResult(ctx, req.(*SaveResultMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TreeGame_GetResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GameID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).GetResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/GetResult",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).GetResult(ctx, req.(*GameID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// TreeGame_ServiceDesc is the grpc.ServiceDesc for TreeGame service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var TreeGame_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "game.TreeGame",
+	HandlerType: (*TreeGameServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "RandomWeather",
+			Handler:    _TreeGame_RandomWeather_Handler,
+		},
+		{
+			MethodName: "RandomTemperature",
+			Handler:    _TreeGame_RandomTemperature_Handler,
+		},
+		{
+			MethodName: "BuyWater",
+			Handler:    _TreeGame_BuyWater_Handler,
+		},
+		{
+			MethodName: "BuyWindShelter",
+			Handler:    _TreeGame_BuyWindShelter_Handler,
+		},
+		{
+			MethodName: "BuyGreenHouse",
+			Handler:    _TreeGame_BuyGreenHouse_Handler,
+		},
+		{
+			MethodName: "BuySpraying",
+			Handler:    _TreeGame_BuySpraying_Handler,
+		},
+		{
+			MethodName: "BuyMedicalKit",
+			Handler:    _TreeGame_BuyMedicalKit_Handler,
+		},
+		{
+			MethodName: "BuyAntiRotAgent",
+			Handler:    _TreeGame_BuyAntiRotAgent_Handler,
+		},
+		{
+			MethodName: "BuyFertilizer",
+			Handler:    _TreeGame_BuyFertilizer_Handler,
+		},
+		{
+			MethodName: "TreeStat",
+			Handler:    _TreeGame_TreeStat_Handler,
+		},
+		{
+			MethodName: "DayResult",
+			Handler:    _TreeGame_DayResult_Handler,
+		},
+		{
+			MethodName: "GetBalance",
+			Handler:    _TreeGame_GetBalance_Handler,
+		},
+		{
+			MethodName: "SaveResult",
+			Handler:    _TreeGame_SaveResult_Handler,
+		},
+		{
+			MethodName: "GetResult",
+			Handler:    _TreeGame_GetResult_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "game.proto",
+}

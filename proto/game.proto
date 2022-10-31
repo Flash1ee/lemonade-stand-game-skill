@@ -61,6 +61,32 @@ message Result {
   int64 result = 2;
 }
 
+message Temperature {
+  string Name = 1;
+}
+
+message Shop {
+  GameID ID = 1;
+  int64 Count = 2;
+}
+
+message ShopResult {
+  Balance Balance = 1;
+  int64 Error = 2;
+}
+
+message Tree {
+  int64 Petals = 1;
+  int64 Lives = 2;
+}
+
+message TreeDayResult {
+  int64 WaterPetals = 1;
+  int64 DiePetals = 2;
+  bool IsRotting = 3;
+  bool IsBeetles = 4;
+}
+
 service LemonadeGame {
   rpc Create(User) returns (CreateResult);
   rpc RandomWeather(GameID) returns (Weather);
@@ -75,6 +101,24 @@ service BotanicalGardenGame {
   rpc RandomWeather(GameID) returns (Weather);
   rpc GetBalance(GameID) returns (Balance);
   rpc Calculate(CalculateRequest) returns (CalculateResponse);
+  rpc SaveResult(SaveResultMessage) returns (Nothing);
+  rpc GetResult(GameID) returns (ResultResponses);
+}
+
+service TreeGame {
+  rpc RandomWeather(GameID) returns (Weather);
+  rpc RandomTemperature(GameID) returns (Temperature);
+  rpc BuyWater(Shop) returns (ShopResult);
+  rpc BuyWindShelter(Shop) returns (ShopResult);
+  rpc BuyGreenHouse(Shop) returns (ShopResult);
+  rpc BuySpraying(Shop) returns (ShopResult);
+  rpc BuyMedicalKit(Shop) returns (ShopResult);
+  rpc BuyAntiRotAgent(Shop) returns (ShopResult);
+  rpc BuyFertilizer(Shop) returns (ShopResult);
+  rpc TreeStat(GameID) returns (Tree);
+  rpc DayResult(GameID) returns (TreeDayResult);
+
+  rpc GetBalance(GameID) returns (Balance);
   rpc SaveResult(SaveResultMessage) returns (Nothing);
   rpc GetResult(GameID) returns (ResultResponses);
 }
