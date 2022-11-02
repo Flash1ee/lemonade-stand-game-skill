@@ -2,10 +2,13 @@ package usecase
 
 import (
 	"crypto/rand"
+	"fmt"
 	"math"
 	"math/big"
 
 	"github.com/evrone/go-clean-template/internal/entity"
+	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 const (
@@ -32,7 +35,9 @@ func New(r GameRepo) *LemonadeGameUsecase {
 }
 
 func (u *LemonadeGameUsecase) CreateUser(userName string) (string, error) {
-	return u.repo.CreateUser(userName)
+	sessionId := uuid.New().String()
+	session := entity.NewSession(userName, sessionId)
+	return u.repo.CreateUser(session)
 }
 
 func (u *LemonadeGameUsecase) SaveStatistics(userID string, result int64) error {
@@ -79,6 +84,11 @@ func (u *LemonadeGameUsecase) Calculate(params entity.DayParams, userID string) 
 	dayWeather := session.Weather[session.CurDay]
 	users := int64(100)
 
+	gameParams := &entity.GameParamsPrices{}
+	err = bson.Unmarshal(session.GameParams, gameParams)
+	if err != nil {
+		return entity.DayResult{}, fmt.Errorf("can not unmarshal bson, err: %w", err)
+	}
 	switch dayWeather.Wtype {
 	case hotWeather:
 		if params.IceAmount < 4 {
@@ -118,7 +128,7 @@ func (u *LemonadeGameUsecase) Calculate(params entity.DayParams, userID string) 
 	}
 
 	profit := int64(math.Min(float64(users), float64(params.CupsAmount))*float64(params.Price)) -
-		session.GameParams.Glass*params.CupsAmount - session.GameParams.Ice*params.IceAmount - session.GameParams.Stand*params.StandAmount
+		gameParams.Glass*params.CupsAmount - gameParams.Ice*params.IceAmount - gameParams.Stand*params.StandAmount
 
 	response.Day = session.CurDay
 	response.Profit = profit

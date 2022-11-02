@@ -106,7 +106,12 @@ service BotanicalGardenGame {
 }
 
 service TreeGame {
+  rpc Create(User) returns (CreateResult);
+  rpc GetBalance(GameID) returns (Balance);
+  rpc SaveResult(SaveResultMessage) returns (Nothing);
+  rpc GetResult(GameID) returns (ResultResponses);
   rpc RandomWeather(GameID) returns (Weather);
+
   rpc RandomTemperature(GameID) returns (Temperature);
   rpc BuyWater(Shop) returns (ShopResult);
   rpc BuyWindShelter(Shop) returns (ShopResult);
@@ -118,7 +123,4 @@ service TreeGame {
   rpc TreeStat(GameID) returns (Tree);
   rpc DayResult(GameID) returns (TreeDayResult);
 
-  rpc GetBalance(GameID) returns (Balance);
-  rpc SaveResult(SaveResultMessage) returns (Nothing);
-  rpc GetResult(GameID) returns (ResultResponses);
 }

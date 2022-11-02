@@ -550,6 +550,7 @@ var BotanicalGardenGame_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TreeGameClient interface {
+	Create(ctx context.Context, in *User, opts ...grpc.CallOption) (*CreateResult, error)
 	RandomWeather(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Weather, error)
 	RandomTemperature(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Temperature, error)
 	BuyWater(ctx context.Context, in *Shop, opts ...grpc.CallOption) (*ShopResult, error)
@@ -572,6 +573,15 @@ type treeGameClient struct {
 
 func NewTreeGameClient(cc grpc.ClientConnInterface) TreeGameClient {
 	return &treeGameClient{cc}
+}
+
+func (c *treeGameClient) Create(ctx context.Context, in *User, opts ...grpc.CallOption) (*CreateResult, error) {
+	out := new(CreateResult)
+	err := c.cc.Invoke(ctx, "/game.TreeGame/Create", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *treeGameClient) RandomWeather(ctx context.Context, in *GameID, opts ...grpc.CallOption) (*Weather, error) {
@@ -704,6 +714,7 @@ func (c *treeGameClient) GetResult(ctx context.Context, in *GameID, opts ...grpc
 // All implementations should embed UnimplementedTreeGameServer
 // for forward compatibility
 type TreeGameServer interface {
+	Create(context.Context, *User) (*CreateResult, error)
 	RandomWeather(context.Context, *GameID) (*Weather, error)
 	RandomTemperature(context.Context, *GameID) (*Temperature, error)
 	BuyWater(context.Context, *Shop) (*ShopResult, error)
@@ -724,6 +735,9 @@ type TreeGameServer interface {
 type UnimplementedTreeGameServer struct {
 }
 
+func (UnimplementedTreeGameServer) Create(context.Context, *User) (*CreateResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
 func (UnimplementedTreeGameServer) RandomWeather(context.Context, *GameID) (*Weather, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RandomWeather not implemented")
 }
@@ -776,6 +790,24 @@ type UnsafeTreeGameServer interface {
 
 func RegisterTreeGameServer(s grpc.ServiceRegistrar, srv TreeGameServer) {
 	s.RegisterService(&TreeGame_ServiceDesc, srv)
+}
+
+func _TreeGame_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(User)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TreeGameServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/game.TreeGame/Create",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TreeGameServer).Create(ctx, req.(*User))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _TreeGame_RandomWeather_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -1037,6 +1069,10 @@ var TreeGame_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "game.TreeGame",
 	HandlerType: (*TreeGameServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Create",
+			Handler:    _TreeGame_Create_Handler,
+		},
 		{
 			MethodName: "RandomWeather",
 			Handler:    _TreeGame_RandomWeather_Handler,

@@ -2,8 +2,8 @@ package mongodb
 
 import (
 	"context"
+
 	"github.com/evrone/go-clean-template/internal/entity"
-	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -25,12 +25,10 @@ func NewGameRepository(clt *mongo.Client) *GameRepository {
 	}
 }
 
-func (repo *GameRepository) CreateUser(username string) (string, error) {
-	sessionId := uuid.New().String()
+func (repo *GameRepository) CreateUser(session *entity.Session) (string, error) {
+	_, err := repo.collectUsers.InsertOne(repo.ctx, session)
 
-	_, err := repo.collectUsers.InsertOne(repo.ctx, entity.NewSession(username, sessionId))
-
-	return sessionId, err
+	return session.SessionId, err
 }
 
 func (repo *GameRepository) GetBalance(sessionID string) (int64, error) {
@@ -113,7 +111,7 @@ func (repo *GameRepository) GetResult(sessiondID string) ([]entity.Statistics, e
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if len(results) == 0 {
 		return nil, nil
 	}

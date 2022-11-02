@@ -85,9 +85,9 @@ func (l *LemonadeGame) SaveResult(ctx context.Context, userID string, result int
 		Result: result,
 	}
 	_, err := l.client.SaveResult(ctx, protoResultData)
-
 	return err
 }
+
 func (l *LemonadeGame) GetResult(ctx context.Context, userID string) ([]StatResult, error) {
 	protoGameID := &proto.GameID{Id: userID}
 

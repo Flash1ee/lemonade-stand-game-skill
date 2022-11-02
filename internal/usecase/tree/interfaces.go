@@ -7,7 +7,7 @@ import "github.com/evrone/go-clean-template/internal/entity"
 
 type (
 	GameRepo interface {
-		CreateUser(session *entity.Session) (string, error)
+		CreateUser(username string) (string, error)
 		GetBalance(userID string) (int64, error)
 		GetSession(userID string) (entity.Session, error)
 		SetDayWeather(userID string, weather entity.Weather) error

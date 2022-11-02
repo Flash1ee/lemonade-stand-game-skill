@@ -1,11 +1,18 @@
 package entity
 
+import "go.mongodb.org/mongo-driver/bson"
+
 const (
 	glassPrice = 10
 	icePrice   = 50
 	StandPrice = 10
 	days       = 21
 	balance    = 2000
+	/////////////////
+	lives       = 5
+	sheets      = 1
+	water       = 0
+	treeBalance = 2000
 )
 
 type User struct {
@@ -18,6 +25,12 @@ type GameParamsPrices struct {
 	Stand int64 `bson:"stand"`
 }
 
+type GameParamsTree struct {
+	Lives  int64 `bson:"lives"`
+	Sheets int64 `bson:"sheets"`
+	Water  int64 `bson:"water"`
+}
+
 func NewGameParams() *GameParamsPrices {
 	return &GameParamsPrices{
 		Glass: glassPrice,
@@ -26,24 +39,46 @@ func NewGameParams() *GameParamsPrices {
 	}
 }
 
+func NewTreeGameParams() *GameParamsTree {
+	return &GameParamsTree{
+		Lives:  lives,
+		Sheets: sheets,
+		Water:  water,
+	}
+}
+
 type Session struct {
-	SessionId  string           `bson:"session_id"`
-	VKUserId   string           `bson:"vk_user_id"`
-	GameParams GameParamsPrices `bson:"game_params"`
-	Weather    []Weather        `bson:"weather"`
-	Days       int64            `bson:"days"`
-	Balance    int64            `bson:"balance"`
-	CurDay     int64            `bson:"cur_day"`
+	SessionId  string    `bson:"session_id"`
+	VKUserId   string    `bson:"vk_user_id"`
+	GameParams []byte    `bson:"game_params"`
+	Weather    []Weather `bson:"weather"`
+	Days       int64     `bson:"days"`
+	Balance    int64     `bson:"balance"`
+	CurDay     int64     `bson:"cur_day"`
 }
 
 func NewSession(userName string, SessionId string) *Session {
+	params, _ := bson.Marshal(NewGameParams())
 	return &Session{
 		SessionId:  SessionId,
 		VKUserId:   userName,
-		GameParams: *NewGameParams(),
+		GameParams: params,
 		Weather:    make([]Weather, days+1),
 		Days:       days,
 		Balance:    balance,
+		CurDay:     1,
+	}
+}
+
+func NewTreeSession(userName string, SessionId string) *Session {
+	params, _ := bson.Marshal(NewTreeGameParams())
+	return &Session{
+		SessionId:  SessionId,
+		VKUserId:   userName,
+		GameParams: params,
+		Weather:    make([]Weather, days+1),
+		Days:       days,
+		Balance:    treeBalance,
 		CurDay:     1,
 	}
 }
